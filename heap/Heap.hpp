@@ -25,6 +25,8 @@ class Heap
       m_nodes.reserve(m_maxSize);
     }
 
+    // @TODO add remove() method
+
     void insert (int key, T value)
     {
       int index = m_size;
