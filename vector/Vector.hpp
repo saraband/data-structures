@@ -84,7 +84,7 @@ class Vector
 
     T& operator[] (int index)
     {
-      if (index + 1 > m_size)
+      if (index < 0 || index + 1 > m_size)
         throw std::runtime_error( "Vector: Out of bounds" );
 
       return m_array[index];

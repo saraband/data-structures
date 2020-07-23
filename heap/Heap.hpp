@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <algorithm>
+#include <stdexcept>
 #include <vector>
 
 //@ TODO REMOVE
@@ -32,6 +33,7 @@ class Heap
       m_nodes[index] = Node(key * type, value);
 
       // Rebalance with parents
+      //@TODO refacto in pushUp
       while (index != 0 && m_nodes[index].key > m_nodes[parentIndex(index)].key) {
         swap(index, parentIndex(index));
         index = parentIndex(index);
@@ -50,6 +52,19 @@ class Heap
       Node temp = m_nodes[indexB];
       m_nodes[indexB] = m_nodes[indexA];
       m_nodes[indexA] = temp;
+    }
+
+    const T& peek () const
+    {
+      if (!m_size)
+        throw std::runtime_error( "Heap: Cannot peek if heap is empty" );
+      
+      return m_nodes[0].value;
+    }
+
+    void pop ()
+    {
+      // @TODO
     }
 
     template <HeapType U, typename V>

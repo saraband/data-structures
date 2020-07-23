@@ -13,5 +13,10 @@ int main ()
   heap.insert(33, 33);
   heap.insert(206, 206);
   cout << heap << endl;
+
+  cout << heap.peek() << endl;
+  heap.pop();
+  cout << heap.peek() << endl;
+  
   return 0;
 }
