@@ -50,7 +50,7 @@ class BinarySearchTree
         }
       }
 
-      restoreTreeBalance(node);
+      restoreSubtreeBalance(node);
     }
 
     // @TODO find, dft, remove
@@ -82,7 +82,7 @@ class BinarySearchTree
       Node*   parent;
     };
 
-    void restoreTreeBalance (Node* node)
+    void restoreSubtreeBalance (Node* node)
     {
       if (node->color == Node::BLACK)
         return;
@@ -108,13 +108,13 @@ class BinarySearchTree
           ? uncle->color
           : Node::BLACK;
 
-        // Red uncle case, simple recoloring
+        // Red uncle case, recolor subtree
         if (uncleColor == Node::RED) {
           uncle->color = Node::BLACK;
           parent->color = Node::BLACK;
           grandparent->color = Node::RED;
 
-          restoreTreeBalance(grandparent);
+          restoreSubtreeBalance(grandparent);
         // Black uncle
         } else {
           // Red triangle case
@@ -132,15 +132,15 @@ class BinarySearchTree
             parent->right = nullptr;
           // Red line case
           } else {
-            // New grandparent is the root
-            if (!grandparent->parent) {
-              m_root = parent;
-            // Connect great-grandparent with new grandparent
-            } else {
+            // Connect parent of the subtree with parent (which will be grandparent after rotation)
+            if (grandparent->parent) {
               if (grandparent->parent->left->key == grandparent->key)
                 grandparent->parent->left = parent;
               else
                 grandparent->parent->right = parent;
+            // Subtree is at the root or the tree, update the root pointer
+            } else {
+              m_root = parent;
             }
 
             // Rotate left
@@ -160,7 +160,7 @@ class BinarySearchTree
             }
           }
 
-          restoreTreeBalance(parent);
+          restoreSubtreeBalance(parent);
         }
       }
     }
