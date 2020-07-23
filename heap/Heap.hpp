@@ -7,8 +7,6 @@
 #include <stdexcept>
 #include <vector>
 
-//@ TODO REMOVE
-const int DEFAULT_HEAP_MAX_SIZE(100);
 enum HeapType {
   MAX = 1,
   MIN = -1
@@ -18,28 +16,19 @@ template<HeapType type, typename T>
 class Heap
 {
   public:
-    Heap (int maxSize = DEFAULT_HEAP_MAX_SIZE)
+    Heap ()
       : m_size    (0)
-      , m_maxSize (maxSize)
-    {
-      m_nodes.reserve(m_maxSize);
-    }
-
-    // @TODO add remove() method
+    {}
 
     void insert (int key, T value)
     {
       int index = m_size;
 
       // Push new node down
-      m_nodes[index] = Node(key * type, value);
+      m_nodes.push_back(Node(key * type, value));
 
-      // Rebalance with parents
-      //@TODO refacto in pushUp
-      while (index != 0 && m_nodes[index].key > m_nodes[parentIndex(index)].key) {
-        swap(index, parentIndex(index));
-        index = parentIndex(index);
-      }
+      // Restore heap property upwards
+      pushUp(index);
 
       m_size++;
     }
@@ -66,13 +55,60 @@ class Heap
 
     void pop ()
     {
-      // @TODO
+      if (!m_size)
+        return;
+
+      m_nodes[0] = m_nodes[m_size - 1];
+      pushDown(0);
+
+      m_size--;
     }
 
     template <HeapType U, typename V>
     friend std::ostream& operator<< (std::ostream&, const Heap<U, V>&);
 
   private:
+    void pushUp (int index)
+    {
+
+      // Reached top
+      if (index == 0)
+        return;
+
+      // Parent is greater than current
+      if (m_nodes[parentIndex(index)].key >= m_nodes[index].key)
+        return;
+
+      swap(index, parentIndex(index));
+      pushUp(parentIndex(index));
+    }
+
+    void pushDown (int index)
+    {
+      int value = m_nodes[index].value;
+      int maxIndex = m_size - 1;
+      int greatestChildIndex = -1;
+      int leftChildIndex = index * 2 + 1;
+      int rightChildIndex = index * 2 + 2;
+
+      // Current node has no children => leaf
+      if (leftChildIndex > maxIndex && rightChildIndex > maxIndex)
+        return;
+
+      if (leftChildIndex <= maxIndex)
+        greatestChildIndex = leftChildIndex;
+      if (rightChildIndex <= maxIndex && m_nodes[rightChildIndex].value > m_nodes[leftChildIndex].value)
+        greatestChildIndex = rightChildIndex;
+
+      // Current node is greater than both its children
+      if (greatestChildIndex == -1)
+        return;
+
+      // Swap with the greatest child
+      swap(index, greatestChildIndex);
+      pushDown(greatestChildIndex);
+    }
+
     struct Node {
       Node (int k, T v)
         : key     (k)
@@ -84,7 +120,6 @@ class Heap
     };
 
     int                  m_size;
-    int                  m_maxSize;
     std::vector<Node>    m_nodes;
 };
 

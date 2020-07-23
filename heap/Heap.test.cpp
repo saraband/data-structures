@@ -17,6 +17,7 @@ int main ()
   cout << heap.peek() << endl;
   heap.pop();
   cout << heap.peek() << endl;
+  cout << heap << endl;
   
   return 0;
 }
