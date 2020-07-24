@@ -171,6 +171,57 @@ class List
       m_size++;
     }
 
+    void swap (Node* a, Node* b)
+    {
+      // Swapping requires at least 2 nodes
+      if (m_size < 2)
+        return;
+
+      // Same node, do nothing
+      if (a == b)
+        return;
+
+      Node* aNextTemp = a->next;
+      Node* aPreviousTemp = a->previous;
+      Node* bNextTemp = b->next;
+      Node* bPreviousTemp = b->previous;
+
+      // Change next/previous pointers of nodes connected to the nodes to swap
+      // Or if a node to swap has no neighbor, then it must be the head/tail
+      // Update it
+      if (a->next)
+        a->next->previous = b;
+      else
+        m_tail = b;
+      if (a->previous)
+        a->previous->next = b;
+      else
+        m_head = b;
+      if (b->next)
+        b->next->previous = a;
+      else
+        m_tail = a;
+      if (b->previous)
+        b->previous->next = a;
+      else
+        m_head = a;
+
+      // Swap next/previous pointers of the nodes to swap
+      a->next = bNextTemp;
+      a->previous = bPreviousTemp;
+      b->next = aNextTemp;
+      b->previous = aPreviousTemp;
+
+      // a and b are neighbors case case
+      if (aNextTemp == b) {
+        a->previous = b;
+        b->next = a;
+      } else if (bNextTemp == a) {
+        b->previous = a;
+        a->next = b;
+      }
+    }
+
     T head () const
     {
       return m_head->value;

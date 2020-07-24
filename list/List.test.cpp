@@ -121,5 +121,30 @@ int main ()
     ASSERT_EQ(list.state(), "5 10 20");
   });
 
+  TEST("swap", {
+    List<int> list;
+    list.push_back(10);
+    list.push_back(20);
+    list.push_back(40);
+    list.push_back(80);
+    auto nodeA = list.find(10);
+    auto nodeB = list.find(40);
+    list.swap(nodeA, nodeB);
+
+    ASSERT_EQ(list.state(), "40 20 10 80");
+  });
+
+  TEST("swap adjacent nodes", {
+    List<int> list;
+    list.push_back(10);
+    list.push_back(20);
+    list.push_back(40);
+    auto nodeA = list.find(10);
+    auto nodeB = list.find(20);
+    list.swap(nodeA, nodeB);
+
+    ASSERT_EQ(list.state(), "20 10 40");
+  });
+
   return 0;
 }
