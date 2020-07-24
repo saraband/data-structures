@@ -2,8 +2,8 @@
 #define TEST_HPP
 
 #include <iostream>
+#include <sstream>
 #include <string>
-#include <cstring>
 
 template<typename T, typename U>
 inline bool __assertEqual (T a, U b)
@@ -15,12 +15,6 @@ template<>
 inline bool __assertEqual (const std::string& str1, const char* str2)
 {
   return str1.compare(str2) == 0;
-}
-
-template<>
-inline bool __assertEqual (const char* str1, const char* str2)
-{
-  return strcmp(str1, str2) == 0;
 }
 
 #define TESTABLE friend int main();

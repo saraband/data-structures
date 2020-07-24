@@ -2,6 +2,7 @@
 #define LIST_HPP
 
 #include "../Test.hpp"
+#include "../Utils.hpp"
 
 template<typename T>
 class List
@@ -17,6 +18,7 @@ class List
 
     ~List ()
     {
+      // Recursively delete all nodes starting from the head
       deleteNode(m_head);
     }
 
@@ -37,9 +39,12 @@ class List
     {
       Node* node = new Node(item);
 
+      // Empty list
       if (!m_size) {
         m_head = node;
         m_tail = node;
+
+      // Other cases
       } else {
         m_tail->next = node;
         node->previous = m_tail;
@@ -49,15 +54,16 @@ class List
       m_size++;
     }
 
-    // @TODO head() tail()
-
     void push_front (T item)
     {
       Node* node = new Node(item);
 
+      // Empty list
       if (!m_size) {
         m_head = node;
         m_tail = node;
+
+      // Other cases
       } else {
         m_head->previous = node;
         node->next = m_head;
@@ -74,9 +80,12 @@ class List
       
       Node* oldHead = m_head;
 
+      // Only one element case, resets to empty list
       if (m_head->next == nullptr) {
         m_head = nullptr;
         m_tail = nullptr;
+
+      // Other cases
       } else {
         m_head = m_head->next;
         m_head->previous = nullptr;
@@ -93,9 +102,12 @@ class List
       
       Node* oldTail = m_tail;
 
+      // Only one element case, resets to empty list
       if (m_tail->previous == nullptr) {
         m_head = nullptr;
         m_tail = nullptr;
+
+      // Other cases
       } else {
         m_tail = m_tail->previous;
         m_tail->next = nullptr;
@@ -129,8 +141,10 @@ class List
       node->next->previous = node;
       node->next->next = oldNextNode;
 
+      // Insert after the tail, reconnect to the new tail
       if (node == m_tail)
         m_tail = node->next;
+      // Other cases, reconnect with the following elements
       else
         oldNextNode->previous = node->next;
 
@@ -147,12 +161,24 @@ class List
       node->previous->next = node;
       node->previous->previous = oldPreviousNode;
 
+      // Insert before the head, reconnect to the new head
       if (node == m_head)
         m_head = node->previous;
+      // Other cases, reconnect with the preceding elements
       else
         oldPreviousNode->next = node->previous;
 
       m_size++;
+    }
+
+    T head () const
+    {
+      return m_head->value;
+    }
+
+    T tail () const
+    {
+      return m_tail->value;
     }
 
     int size () const
@@ -161,6 +187,25 @@ class List
     }
 
   private:
+    // For testing
+    std::string state () const
+    {
+      std::string state;
+      Node* current = m_head;
+
+      while (current) {
+        state += toString(current->value);
+
+        if (current->next)
+          state += " ";
+
+        current = current->next;
+      }
+
+      return state;
+    }
+
+    // Deletes a node and all the next nodes recursively
     void deleteNode (Node* node)
     {
       if (node == nullptr)
