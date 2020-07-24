@@ -2,6 +2,7 @@
 #define BST_HPP
 
 #include <iostream>
+#include <array>
 #include <queue>
 
 enum BSTType {
@@ -55,8 +56,14 @@ class BinarySearchTree
 
     // @TODO find, dft, remove
 
-    template <BSTType U, typename V>
-    friend std::ostream& operator<< (std::ostream&, const BinarySearchTree<U, V>&);
+    // For testing states of the tree
+    std::array<int> log ()
+    {
+      std::array<int> state;
+      std::queue<Node*> nodes;
+
+      nodes.push(m_root);
+    }
 
   private:
     struct Node {
@@ -167,13 +174,5 @@ class BinarySearchTree
 
     Node* m_root;
 };
-
-template <BSTType type, typename T>
-std::ostream& operator<< (std::ostream& os, const BinarySearchTree<type, T>& tree)
-{
-  // @TODO
-
-  return os;
-}
 
 #endif
