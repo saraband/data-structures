@@ -1,9 +1,13 @@
 #ifndef LIST_HPP
 #define LIST_HPP
 
+#include "../Test.hpp"
+
 template<typename T>
 class List
 {
+  TESTABLE
+
   public:
     List ()
       : m_head  (nullptr)
@@ -156,9 +160,6 @@ class List
       return m_size;
     }
 
-    template <typename U>
-    friend std::ostream& operator<< (std::ostream&, const List<U>&);
-
   private:
     void deleteNode (Node* node)
     {
@@ -173,22 +174,5 @@ class List
     Node*   m_tail;
     int     m_size;
 };
-
-template <typename T>
-std::ostream& operator<< (std::ostream& os, const List<T>& list)
-{
-  auto node = list.m_head;
-
-  while (node) {
-    os << node->value;
-
-    if (node->next)
-      os << " ";
-    
-    node = node->next;
-  }
-
-  return os;
-}
 
 #endif
