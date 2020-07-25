@@ -15,7 +15,7 @@ template<typename T>
 class Vector
 {
   TESTABLE
-
+  
   public:
     Vector ()
       : m_capacity  { 0 }

@@ -8,7 +8,7 @@ template<typename T>
 class List
 {
   TESTABLE
-
+  
   public:
     List ()
       : m_head  { nullptr }

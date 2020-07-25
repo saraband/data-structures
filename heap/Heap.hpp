@@ -19,7 +19,7 @@ template<HeapType::HeapType type, typename T>
 class Heap
 {
   TESTABLE
-
+  
   public:
     Heap ()
       : m_size  { 0 }
