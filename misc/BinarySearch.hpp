@@ -7,6 +7,7 @@
 #include "../Test.hpp"
 #include "../Utils.hpp"
 
+// @TODO this does not work
 template<typename T>
 int binarySearchFindIndex (const std::vector<T>& array, T value) {
   if (!array.size())

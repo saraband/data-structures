@@ -9,10 +9,12 @@ enum BSTType {
   RED_BLACK,
   AVL
 };
-
+// @TODO split all files into .tpp files
 template<BSTType type, typename T>
 class BinarySearchTree
 {
+  TESTABLE
+
   public:
     BinarySearchTree ()
       : m_root (nullptr)

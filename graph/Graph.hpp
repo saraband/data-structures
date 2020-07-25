@@ -21,6 +21,7 @@ template<GraphType::GraphType graphType, typename T>
 class Graph
 {
   TESTABLE
+
   struct Node;
 
   public:

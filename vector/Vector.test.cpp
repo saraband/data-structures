@@ -2,111 +2,101 @@
 
 int main ()
 {
-  TEST("Initialize empty vector", {
+  test::registerTest("Initialize empty vector", [](){
     Vector<int> vector;
 
-    ASSERT_EQ(vector.m_size, 0);
-    ASSERT_EQ(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
+    test::assertEq(vector.m_size, 0);
+    test::assertEq(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
   });
 
-  TEST("push_back", {
+  test::registerTest("push_back", [](){
     Vector<int> vector;
     vector.push_back(10);
     vector.push_back(20);
     vector.push_back(40);
 
-    ASSERT_EQ(vector.m_size, 3);
-    ASSERT_EQ(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
-    ASSERT_EQ(vector.state(), "10 20 40");
+    test::assertEq(vector.m_size, 3);
+    test::assertEq(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
+    test::assertEq(vector.state(), "10 20 40");
   });
 
-  TEST("push_front", {
+  test::registerTest("push_front", [](){
     Vector<int> vector;
     vector.push_front(10);
     vector.push_front(20);
     vector.push_front(40);
 
-    ASSERT_EQ(vector.m_size, 3);
-    ASSERT_EQ(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
-    ASSERT_EQ(vector.state(), "40 20 10");
+    test::assertEq(vector.m_size, 3);
+    test::assertEq(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
+    test::assertEq(vector.state(), "40 20 10");
   });
 
-  TEST("pop_back", {
+  test::registerTest("pop_back", [](){
     Vector<int> vector;
     vector.push_back(10);
     vector.push_back(20);
     vector.pop_back();
 
-    ASSERT_EQ(vector.m_size, 1);
-    ASSERT_EQ(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
-    ASSERT_EQ(vector.state(), "10");
+    test::assertEq(vector.m_size, 1);
+    test::assertEq(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
+    test::assertEq(vector.state(), "10");
   });
 
-  TEST("pop_back vector is empty", {
+  test::registerTest("pop_back vector is empty", [](){
     Vector<int> vector;
     vector.pop_back();
 
-    ASSERT_EQ(vector.m_size, 0);
-    ASSERT_EQ(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
-    ASSERT_EQ(vector.state(), "");
+    test::assertEq(vector.m_size, 0);
+    test::assertEq(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
+    test::assertEq(vector.state(), "");
   });
 
-  TEST("pop_front", {
+  test::registerTest("pop_front", [](){
     Vector<int> vector;
     vector.push_front(10);
     vector.push_front(20);
     vector.pop_front();
 
-    ASSERT_EQ(vector.m_size, 1);
-    ASSERT_EQ(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
-    ASSERT_EQ(vector.state(), "10");
+    test::assertEq(vector.m_size, 1);
+    test::assertEq(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
+    test::assertEq(vector.state(), "10");
   });
 
-  TEST("pop_front when vector is empty", {
+  test::registerTest("pop_front when vector is empty", [](){
     Vector<int> vector;
     vector.pop_front();
 
-    ASSERT_EQ(vector.m_size, 0);
-    ASSERT_EQ(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
-    ASSERT_EQ(vector.state(), "");
+    test::assertEq(vector.m_size, 0);
+    test::assertEq(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
+    test::assertEq(vector.state(), "");
   });
 
-  TEST("reserve", {
+  test::registerTest("reserve", [](){
     Vector<int> vector;
     vector.reserve(200);
 
-    ASSERT_EQ(vector.m_size, 0);
-    ASSERT_EQ(vector.m_capacity, 200);
-    ASSERT_EQ(vector.state(), "");
+    test::assertEq(vector.m_size, 0);
+    test::assertEq(vector.m_capacity, 200);
+    test::assertEq(vector.state(), "");
   });
   
-  TEST("reserve to a smaller capacity", {
+  test::registerTest("reserve to a smaller capacity", [](){
     Vector<int> vector;
     vector.reserve(10);
 
-    ASSERT_EQ(vector.m_size, 0);
-    ASSERT_EQ(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
-    ASSERT_EQ(vector.state(), "");
+    test::assertEq(vector.m_size, 0);
+    test::assertEq(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
+    test::assertEq(vector.state(), "");
   });
 
-  TEST("operator[]", {
+  test::registerTest("operator[]", [](){
     Vector<int> vector;
     vector.push_back(10);
     vector.push_back(20);
     vector.push_back(40);
 
-    ASSERT_EQ(vector[0], 10);
-    ASSERT_EQ(vector[2], 40);
-  });
-
-  TEST("operator[]", {
-    Vector<int> vector;
-    vector.push_back(10);
-    vector.push_back(20);
-    vector.push_back(40);
-
-    ASSERT_EQ(vector[0], 10);
-    ASSERT_EQ(vector[2], 40);
+    test::assertEq(vector[0], 10);
+    test::assertEq(vector[2], 40);
   });
   
   return 0;

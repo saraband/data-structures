@@ -2,17 +2,16 @@
 
 int main ()
 {
-    typedef Graph<GraphType::UNDIRECTED, int> UndirectedGraph;
-    typedef Graph<GraphType::DIRECTED, int> DirectedGraph;
+  // @TODO
+  test::registerTest("Initialize graph", [](){
+    Graph<GraphType::UNDIRECTED, int> uGraph;
+    Graph<GraphType::DIRECTED, int> dGraph;
 
-    TEST("Initialize graph", {
-      UndirectedGraph uGraph;
-      DirectedGraph dGraph;
+    test::assertEq(uGraph.state(), "");
+    test::assertEq(uGraph.m_nodes.size(), 0);
+    test::assertEq(dGraph.state(), "");
+    test::assertEq(dGraph.m_nodes.size(), 0);
+  });
 
-      ASSERT_EQ(uGraph.state(), "");
-      ASSERT_EQ(uGraph.m_nodes.size(), 0);
-      ASSERT_EQ(dGraph.state(), "");
-      ASSERT_EQ(dGraph.m_nodes.size(), 0);
-    })
   return 0;
 }
