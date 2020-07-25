@@ -2,53 +2,45 @@
 #define HEAP_HPP
 
 #include <cmath>
-#include <iostream>
-#include <algorithm>
 #include <stdexcept>
 #include <vector>
 
+#include "../Test.hpp"
+#include "../Utils.hpp"
+
+namespace HeapType {
 enum HeapType {
   MAX = 1,
   MIN = -1
 };
+}
 
-template<HeapType type, typename T>
+template<HeapType::HeapType type, typename T>
 class Heap
 {
+  TESTABLE
+
   public:
     Heap ()
-      : m_size    (0)
+      : m_size  { 0 }
     {}
 
     void insert (int key, T value)
     {
-      int index = m_size;
+      m_size++;
+      int index = m_size - 1;
 
       // Push new node down
       m_nodes.push_back(Node(key * type, value));
 
-      // Restore heap property upwards
+      // Restore heap property upwards starting from newly inserted element
       pushUp(index);
-
-      m_size++;
-    }
-
-    int parentIndex (int index) const
-    {
-      return floor(index / 2);
-    }
-
-    void swap (int indexA, int indexB)
-    {
-      Node temp = m_nodes[indexB];
-      m_nodes[indexB] = m_nodes[indexA];
-      m_nodes[indexA] = temp;
     }
 
     const T& peek () const
     {
       if (!m_size)
-        throw std::runtime_error( "Heap: Cannot peek if heap is empty" );
+        throw std::runtime_error("Cannot peek: heap is empty");
       
       return m_nodes[0].value;
     }
@@ -58,61 +50,81 @@ class Heap
       if (!m_size)
         return;
 
+      // Swap last element with root and restore the heap property downwards starting from root
       m_nodes[0] = m_nodes[m_size - 1];
-      pushDown(0);
-
       m_size--;
+
+      pushDown(0);
     }
 
-    template <HeapType U, typename V>
-    friend std::ostream& operator<< (std::ostream&, const Heap<U, V>&);
-
   private:
+    // For testing
+    std::string state () const
+    {
+      std::string state;
+
+      for (int i = 0; i < m_size; i++) {
+        state += toString(m_nodes[i].value);
+
+        if (i < m_size - 1)
+          state +=  ' ';
+      }
+
+      return state;
+    }
+
+    void swap (int indexA, int indexB)
+    {
+      Node temp = m_nodes[indexB];
+      m_nodes[indexB] = m_nodes[indexA];
+      m_nodes[indexA] = temp;
+    }
+
     void pushUp (int index)
     {
-
       // Reached top
       if (index == 0)
         return;
 
-      // Parent is greater than current
-      if (m_nodes[parentIndex(index)].key >= m_nodes[index].key)
+      // Parent key is greater than current key, heap properties restored
+      int parentIndex = ceil(index / 2.f) - 1;
+      if (m_nodes[parentIndex].key >= m_nodes[index].key)
         return;
-
-      swap(index, parentIndex(index));
-      pushUp(parentIndex(index));
+  
+      swap(index, parentIndex);
+      pushUp(parentIndex);
     }
 
     void pushDown (int index)
     {
-      int value = m_nodes[index].value;
-      int maxIndex = m_size - 1;
-      int greatestChildIndex = -1;
+      const int maxHeapIndex = m_size - 1;
+      int largestChildIndex = -1;
       int leftChildIndex = index * 2 + 1;
       int rightChildIndex = index * 2 + 2;
 
-      // Current node has no children => leaf
-      if (leftChildIndex > maxIndex && rightChildIndex > maxIndex)
+      // Current node is a leaf, no need to do anything
+      if (leftChildIndex > maxHeapIndex && rightChildIndex > maxHeapIndex)
         return;
 
-      if (leftChildIndex <= maxIndex)
-        greatestChildIndex = leftChildIndex;
-      if (rightChildIndex <= maxIndex && m_nodes[rightChildIndex].value > m_nodes[leftChildIndex].value)
-        greatestChildIndex = rightChildIndex;
+      // Find child with larger key
+      if (leftChildIndex <= maxHeapIndex)
+        largestChildIndex = leftChildIndex;
+      if (rightChildIndex <= maxHeapIndex && m_nodes[rightChildIndex].key > m_nodes[leftChildIndex].key)
+        largestChildIndex = rightChildIndex;
 
-      // Current node is greater than both its children
-      if (greatestChildIndex == -1)
+      // Current node key is larger than both its children
+      if (largestChildIndex == -1)
         return;
 
-      // Swap with the greatest child
-      swap(index, greatestChildIndex);
-      pushDown(greatestChildIndex);
+      // Swap with the largest child
+      swap(index, largestChildIndex);
+      pushDown(largestChildIndex);
     }
 
     struct Node {
       Node (int k, T v)
-        : key     (k)
-        , value   (v)
+        : key     { k }
+        , value   { v }
       {}
 
       int   key;
@@ -122,15 +134,5 @@ class Heap
     int                  m_size;
     std::vector<Node>    m_nodes;
 };
-
-template <HeapType type, typename T>
-std::ostream& operator<< (std::ostream& os, const Heap<type, T>& heap)
-{
-  for (int i = 0; i < heap.m_size; i++) {
-    os << heap.m_nodes[i].value << " ";
-  }
-
-  return os;
-}
 
 #endif

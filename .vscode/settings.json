@@ -52,6 +52,8 @@
     "thread": "cpp",
     "unordered_map": "cpp",
     "xhash": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "map": "cpp",
+    "xtree": "cpp"
   }
 }

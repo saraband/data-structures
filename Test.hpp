@@ -18,11 +18,13 @@ inline bool __assertEqual (const std::string& str1, const char* str2)
 
 #define TESTABLE friend int main();
 
+#define LOG(BLOCK) std::cout << BLOCK << std::endl;
+
 #define TEST(NAME, BLOCK) \
   { \
     int __errorsCurrentTest = 0; \
     std::cout << NAME; \
-    BLOCK \
+    BLOCK; \
     if (__errorsCurrentTest == 0) \
       std::cout << "......SUCCESS"; \
     std::cout << std::endl; \

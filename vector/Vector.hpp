@@ -9,7 +9,7 @@
 
 // @TODO swap, binary_search
 
-constexpr int DEFAULT_VECTOR_CAPACITY{ 100 };
+constexpr int DEFAULT_VECTOR_CAPACITY = 100;
 
 template<typename T>
 class Vector
@@ -97,10 +97,10 @@ class Vector
     {
       std::string state;
 
-      for (int i{ 0 }; i < m_size; i++) {
+      for (int i = 0; i < m_size; i++) {
         state += toString(m_array[i]);
 
-        if (i != m_size - 1)
+        if (i < m_size - 1)
           state +=  ' ';
       }
 
