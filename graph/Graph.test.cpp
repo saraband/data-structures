@@ -2,11 +2,17 @@
 
 int main ()
 {
-    Graph<GraphType::UNDIRECTED, int> graph;
-    graph.addNode(5, 5);
-    graph.addNode(7, 7);
-    graph.addEdge(5, 7, 20);
+    typedef Graph<GraphType::UNDIRECTED, int> UndirectedGraph;
+    typedef Graph<GraphType::DIRECTED, int> DirectedGraph;
 
-    std::cout << graph.state() << std::endl;
+    TEST("Initialize graph", {
+      UndirectedGraph uGraph;
+      DirectedGraph dGraph;
+
+      ASSERT_EQ(uGraph.state(), "");
+      ASSERT_EQ(uGraph.m_nodes.size(), 0);
+      ASSERT_EQ(dGraph.state(), "");
+      ASSERT_EQ(dGraph.m_nodes.size(), 0);
+    })
   return 0;
 }
