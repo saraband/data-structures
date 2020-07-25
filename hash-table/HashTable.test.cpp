@@ -41,7 +41,7 @@ int main ()
     HashTable<int> map;
     map.set(5, 5);
 
-    ASSERT_EQ(map.get(10) == map.nil(), true);
+    ASSERT_EQ(map.get(10) == map.nil(), true);// @TODO pas bon, changer ça
   });
 
   TEST("remove", {
@@ -51,7 +51,7 @@ int main ()
     map.remove(10);
 
     ASSERT_EQ(map.m_size, 1);
-    ASSERT_EQ(map.get(10) == map.nil(), true);
+    ASSERT_EQ(map.get(10) == map.nil(), true); // @TODO pas bon, changer ça
   });
 
   // @TODO test grow capacity

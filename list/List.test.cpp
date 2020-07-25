@@ -2,82 +2,82 @@
 
 int main ()
 {
-  TEST("Initialize empty list", {
+  test::registerTest("Initialize empty list", [](){
     List<int> list;
 
-    ASSERT_EQ(list.m_size, 0);
-    ASSERT_EQ(list.state(), "");
-    ASSERT_EQ(list.m_head, nullptr);
-    ASSERT_EQ(list.m_tail, nullptr);
-  })
+    test::assertEq(list.m_size, 0);
+    test::assertEq(list.state(), "");
+    test::assertEq(list.m_head, nullptr);
+    test::assertEq(list.m_tail, nullptr);
+  });
 
-  TEST("push_back", {
+  test::registerTest("push_back", [](){
     List<int> list;
     list.push_back(10);
     list.push_back(20);
 
-    ASSERT_EQ(list.m_size, 2);
-    ASSERT_EQ(list.state(), "10 20");
-    ASSERT_EQ(list.head(), 10);
-    ASSERT_EQ(list.tail(), 20);
-  })
+    test::assertEq(list.m_size, 2);
+    test::assertEq(list.state(), "10 20");
+    test::assertEq(list.head(), 10);
+    test::assertEq(list.tail(), 20);
+  });
 
-  TEST("push_front", {
+  test::registerTest("push_front", [](){
     List<int> list;
     list.push_front(10);
     list.push_front(20);
 
-    ASSERT_EQ(list.m_size, 2);
-    ASSERT_EQ(list.state(), "20 10");
-    ASSERT_EQ(list.head(), 20);
-    ASSERT_EQ(list.tail(), 10);
+    test::assertEq(list.m_size, 2);
+    test::assertEq(list.state(), "20 10");
+    test::assertEq(list.head(), 20);
+    test::assertEq(list.tail(), 10);
   });
 
-  TEST("pop_back", {
+  test::registerTest("pop_back", [](){
     List<int> list;
     list.push_back(10);
     list.push_back(20);
     list.pop_back();
 
-    ASSERT_EQ(list.m_size, 1);
-    ASSERT_EQ(list.state(), "10");
-    ASSERT_EQ(list.head(), 10);
-    ASSERT_EQ(list.tail(), 10);
+    test::assertEq(list.m_size, 1);
+    test::assertEq(list.state(), "10");
+    test::assertEq(list.head(), 10);
+    test::assertEq(list.tail(), 10);
   });
 
-  TEST("pop_back when list is empty", {
+  test::registerTest("pop_back when list is empty", [](){
     List<int> list;
     list.pop_back();
 
-    ASSERT_EQ(list.m_size, 0);
-    ASSERT_EQ(list.state(), "");
-    ASSERT_EQ(list.m_head, nullptr);
-    ASSERT_EQ(list.m_tail, nullptr);
+    test::assertEq(list.m_size, 0);
+    test::assertEq(list.state(), "");
+    test::assertEq(list.m_head, nullptr);
+    test::assertEq(list.m_tail, nullptr);
   });
 
-  TEST("pop_front", {
+  test::registerTest("pop_front", [](){
     List<int> list;
     list.push_front(10);
     list.push_front(20);
     list.pop_front();
 
-    ASSERT_EQ(list.m_size, 1);
-    ASSERT_EQ(list.state(), "10");
-    ASSERT_EQ(list.head(), 10);
-    ASSERT_EQ(list.tail(), 10);
+    test::assertEq(list.m_size, 1);
+    test::assertEq(list.state(), "10");
+    test::assertEq(list.head(), 10);
+    test::assertEq(list.tail(), 10);
   });
 
-  TEST("pop_front when list is empty", {
+  test::registerTest("pop_front when list is empty", [](){
     List<int> list;
     list.pop_front();
 
-    ASSERT_EQ(list.m_size, 0);
-    ASSERT_EQ(list.state(), "");
-    ASSERT_EQ(list.m_head, nullptr);
-    ASSERT_EQ(list.m_tail, nullptr);
+    test::assertEq(list.m_size, 0);
+    test::assertEq(list.state(), "");
+    test::assertEq(list.m_head, nullptr);
+    test::assertEq(list.m_tail, nullptr);
   });
 
-  TEST("find", {
+  test::registerTest("find", [](){
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -85,43 +85,43 @@ int main ()
     list.push_back(80);
     auto node = list.find(40);
 
-    ASSERT_EQ(node->value, 40);
-    ASSERT_EQ(node->previous->value, 20);
-    ASSERT_EQ(node->next->value, 80);
+    test::assertEq(node->value, 40);
+    test::assertEq(node->previous->value, 20);
+    test::assertEq(node->next->value, 80);
   });
 
-  TEST("find when the element does not exists", {
+  test::registerTest("find when the element does not exists", [](){
     List<int> list;
     list.push_back(10);
     list.push_back(20);
     auto node = list.find(40);
 
-    ASSERT_EQ(node, nullptr);
+    test::assertEq(node, nullptr);
   });
 
-  TEST("insertAfter", {
+  test::registerTest("insertAfter", [](){
     List<int> list;
     list.push_back(10);
     list.push_back(20);
     auto node = list.find(20);
     list.insertAfter(node, 40);
 
-    ASSERT_EQ(list.m_size, 3);
-    ASSERT_EQ(list.state(), "10 20 40");
+    test::assertEq(list.m_size, 3);
+    test::assertEq(list.state(), "10 20 40");
   });
 
-  TEST("insertBefore", {
+  test::registerTest("insertBefore", [](){
     List<int> list;
     list.push_back(10);
     list.push_back(20);
     auto node = list.find(10);
     list.insertBefore(node, 5);
 
-    ASSERT_EQ(list.m_size, 3);
-    ASSERT_EQ(list.state(), "5 10 20");
+    test::assertEq(list.m_size, 3);
+    test::assertEq(list.state(), "5 10 20");
   });
 
-  TEST("swap", {
+  test::registerTest("swap", [](){
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -131,10 +131,10 @@ int main ()
     auto nodeB = list.find(40);
     list.swap(nodeA, nodeB);
 
-    ASSERT_EQ(list.state(), "40 20 10 80");
+    test::assertEq(list.state(), "40 20 10 80");
   });
 
-  TEST("swap adjacent nodes", {
+  test::registerTest("swap adjacent nodes", [](){
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -143,7 +143,7 @@ int main ()
     auto nodeB = list.find(20);
     list.swap(nodeA, nodeB);
 
-    ASSERT_EQ(list.state(), "20 10 40");
+    test::assertEq(list.state(), "20 10 40");
   });
 
   return 0;

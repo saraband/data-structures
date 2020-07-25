@@ -24,7 +24,7 @@ int HashTable<T>::size () const
 template<typename T>
 typename HashTable<T>::HashElement const& HashTable<T>::nil () const
 {
-  static HashElement nil(0, 0);
+  static HashElement nil(0, 0); // @TODO PAS BON
   return nil;
 }
 

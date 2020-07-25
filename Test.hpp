@@ -3,43 +3,57 @@
 
 #include <iostream>
 #include <string>
+#include <stdexcept>
+
+#define TESTABLE friend int main ();
+
+#define assertEq(A, B) __assertEq(A, B, std::string(#A) + " == " + std::string(#B))
+#define assertThrow(FN) __assertThrow<std::runtime_error>(FN, std::string(#FN) + " should throw a std::runtime_error")
+
+namespace
+{
+void __assert (bool condition, const std::string& exp)
+{
+  if (!condition) {
+    std::cout << "  Assertion failed: " << exp << std::endl;
+  }
+}
+}
+
+namespace test
+{
+template<typename T>
+void registerTest (std::string name, T fn)
+{
+  std::cout << name << std::endl;
+  fn();
+}
 
 template<typename T, typename U>
-inline bool __assertEqual (T a, U b)
+void __assertEq (T a, U b, const std::string& exp)
 {
-  return a == b;
+  __assert(a == b, exp);
 }
 
 template<>
-inline bool __assertEqual (const std::string& str1, const char* str2)
+void __assertEq (std::string a, const char* b, const std::string& exp)
 {
-  return str1.compare(str2) == 0;
+  __assert(a.compare(b) == 0, exp);
 }
 
-#define TESTABLE friend int main();
+template<typename U, typename T>
+void __assertThrow (const T& fn, const std::string& exp)
+{
+  bool hasThrown = false;
 
-#define LOG(BLOCK) std::cout << BLOCK << std::endl;
-
-#define TEST(NAME, BLOCK) \
-  { \
-    int __errorsCurrentTest = 0; \
-    std::cout << NAME; \
-    BLOCK; \
-    if (__errorsCurrentTest == 0) \
-      std::cout << "......SUCCESS"; \
-    std::cout << std::endl; \
+  try {
+    fn();
+  } catch (const U& exception) {
+    hasThrown = true;
   }
 
-#define ASSERT_EQ(A, B) \
-  if (!__assertEqual(A, B)) { \
-    std::cout << "\n    "; \
-    std::cout << "Assertion failed: ASSERT_EQ("; \
-    std::cout << #A; \
-    std::cout << ", "; \
-    std::cout << #B; \
-    std::cout << ")"; \
-    __errorsCurrentTest++; \
-  }
-
+  __assert(hasThrown, exp);
+}
+}
 
 #endif
