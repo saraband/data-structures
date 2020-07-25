@@ -11,9 +11,9 @@ class List
 
   public:
     List ()
-      : m_head  (nullptr)
-      , m_tail  (nullptr)
-      , m_size  (0)
+      : m_head  { nullptr }
+      , m_tail  { nullptr }
+      , m_size  { 0 }
     {}
 
     ~List ()
@@ -25,9 +25,9 @@ class List
     struct Node
     {
       Node (T v)
-        : value     (v)
-        , next      (nullptr)
-        , previous  (nullptr)
+        : value     { v }
+        , next      { nullptr }
+        , previous  { nullptr }
       {}
 
       Node*   next;
@@ -188,7 +188,7 @@ class List
 
       // Change next/previous pointers of nodes connected to the nodes to swap
       // Or if a node to swap has no neighbor, then it must be the head/tail
-      // Update it
+      // Update head/tail pointer
       if (a->next)
         a->next->previous = b;
       else
@@ -248,7 +248,7 @@ class List
         state += toString(current->value);
 
         if (current->next)
-          state += " ";
+          state += ' ';
 
         current = current->next;
       }

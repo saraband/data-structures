@@ -2,7 +2,6 @@
 #define TEST_HPP
 
 #include <iostream>
-#include <sstream>
 #include <string>
 
 template<typename T, typename U>

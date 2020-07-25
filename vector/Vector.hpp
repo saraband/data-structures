@@ -3,22 +3,26 @@
 
 #include <iostream>
 #include <cstring>
-#include <stdexcept>
+
+#include "../Test.hpp"
+#include "../Utils.hpp"
 
 // @TODO swap, binary_search
 
-const int VECTOR_DEFAULT_CAPACITY = 100;
+constexpr int DEFAULT_VECTOR_CAPACITY{ 100 };
 
 template<typename T>
 class Vector
 {
+  TESTABLE
+
   public:
     Vector ()
-      : m_capacity  (VECTOR_DEFAULT_CAPACITY)
-      , m_size      (0)
-      , m_array     (nullptr)
+      : m_capacity  { 0 }
+      , m_size      { 0 }
+      , m_array     { nullptr }
     {
-      m_array = new T[m_capacity];
+      reserve(DEFAULT_VECTOR_CAPACITY);
     }
 
     ~Vector ()
@@ -28,25 +32,20 @@ class Vector
 
     void push_back (T item)
     {
-      if (m_size + 1 > m_capacity) {
-        reserve(m_size + 1);
-      }
-
-      m_array[m_size] = item;
       m_size++;
+      reserve(m_size);
+      m_array[m_size - 1] = item;
     }
 
     void push_front (T item)
     {
-      if (m_size + 1 > m_capacity) {
-        reserve(m_size + 1);
-      }
+      m_size++;
+      reserve(m_size);
 
-      // Shift whole array
+      // Shift whole array to the right
       std::memmove(m_array + 1, m_array, sizeof(T) * m_size);
 
       m_array[0] = item;
-      m_size++;
     }
 
     void pop_front ()
@@ -54,7 +53,7 @@ class Vector
       if (!m_size)
         return;
 
-      // Shift whole array
+      // Shift whole array to the left
       std::memmove(m_array, m_array + 1, sizeof(T) * m_size);
 
       m_size--;
@@ -78,15 +77,12 @@ class Vector
 
       std::memcpy(newArray, m_array, sizeof(T) * m_size);
 
-      delete m_array;
+      delete[] m_array;
       m_array = newArray;
     }
 
     T& operator[] (int index)
     {
-      if (index < 0 || index + 1 > m_size)
-        throw std::runtime_error( "Vector: Out of bounds" );
-
       return m_array[index];
     }
 
@@ -95,26 +91,25 @@ class Vector
       return m_size;
     }
 
-    template <typename U>
-    friend std::ostream& operator<< (std::ostream&, const Vector<U>&);
-
   private:
-    int m_capacity;
-    int m_size;
-    T*  m_array;
+    // For testing
+    std::string state () const
+    {
+      std::string state;
+
+      for (int i{ 0 }; i < m_size; i++) {
+        state += toString(m_array[i]);
+
+        if (i != m_size - 1)
+          state +=  ' ';
+      }
+
+      return state;
+    }
+
+    int   m_capacity;
+    int   m_size;
+    T*    m_array;
 };
-
-template <typename T>
-std::ostream& operator<< (std::ostream& os, const Vector<T>& vector)
-{
-  for (int i = 0; i < vector.m_size; i++) {
-    os << vector.m_array[i];
-
-    if (i < vector.m_size - 1)
-      os << " ";
-  }
-
-  return os;
-}
 
 #endif
