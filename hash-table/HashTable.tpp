@@ -1,10 +1,10 @@
 #include "HashTable.hpp"
 
 template<typename T>
-HashTable<T>::HashTable ()
+HashTable<T>::HashTable (int baseCapacity)
   : m_size                    { 0 }
-  , m_capacity                { HASH_TABLE_DEFAULT_CAPACITY }
-  , m_growCapacityThreshold   { static_cast<int>(HASH_TABLE_DEFAULT_CAPACITY * HASH_TABLE_GROW_THRESHOLD) }
+  , m_capacity                { baseCapacity }
+  , m_growCapacityThreshold   { static_cast<int>(baseCapacity * HASH_TABLE_CAPACITY_GROW_THRESHOLD) }
 {
   m_buckets.resize(m_capacity);
 }
@@ -24,7 +24,7 @@ int HashTable<T>::size () const
 template<typename T>
 typename HashTable<T>::HashElement const& HashTable<T>::nil () const
 {
-  static HashElement nil(0, 0); // @TODO PAS BON
+  static HashElement nil;
   return nil;
 }
 
@@ -33,7 +33,7 @@ typename HashTable<T>::HashElement const& HashTable<T>::get (int key) const
 {
   const auto& bucket = m_buckets[hash(key)];
   for (const auto& element : bucket) {
-    if (element.key == key) {
+    if (element.key() == key) {
       return element;
     }
   }
@@ -47,7 +47,7 @@ void HashTable<T>::set (int key, T value)
   auto& bucket = m_buckets[hash(key)];
   for (const auto& element : bucket) {
     // Element is already set, abort
-    if (element.key == key)
+    if (element.key() == key)
       return;
   }
 
@@ -58,11 +58,18 @@ void HashTable<T>::set (int key, T value)
   // Hashtable has reached 80% capacity
   // Double the buckets and re-hash everything
   if (m_size >= m_growCapacityThreshold) {
-    return;
-    m_capacity *= HASH_TABLE_GROW_RATIO;
-    m_growCapacityThreshold = m_capacity * HASH_TABLE_GROW_THRESHOLD;
+    m_capacity *= HASH_TABLE_CAPACITY_GROW_RATIO;
+    m_growCapacityThreshold = m_capacity * HASH_TABLE_CAPACITY_GROW_THRESHOLD;
 
-    // @TODO hash everything again
+    auto tempBuckets{ std::move(m_buckets) };
+    m_buckets.resize(m_capacity);
+
+    // No need to check for key duplicate
+    for (auto& bucket : tempBuckets) {
+      for (auto& element : bucket) {
+        m_buckets[hash(element.key())].push_back(HashElement(element));
+      }
+    }
   }
 }
 
@@ -71,10 +78,62 @@ void HashTable<T>::remove (int key)
 {
   auto& bucket = m_buckets[hash(key)];
   for (auto it = bucket.begin(); it != bucket.end(); it++) {
-    if (it->key == key) {
+    if (it->key() == key) {
       bucket.erase(it);
       m_size--;
       return;
     }
   }
+}
+
+template<typename T>
+HashTable<T>::HashElement::HashElement ()
+  : m_key     { 0 }
+  , m_value   { nullptr }
+{}
+
+template<typename T>
+HashTable<T>::HashElement::HashElement (int k, const T& v)
+  : m_key     { k }
+  , m_value   { new T(v) }
+{}
+
+template<typename T>
+HashTable<T>::HashElement::HashElement (const HashElement& other)
+  : m_key     { other.m_key }
+  , m_value   { nullptr }
+{
+  if (other.m_value)
+    m_value = new T(*other.m_value);
+}
+
+template<typename T>
+HashTable<T>::HashElement::~HashElement ()
+{
+  if (m_value)
+    delete m_value;
+}
+
+template<typename T>
+const T& HashTable<T>::HashElement::value () const
+{
+  return *m_value;
+}
+
+template<typename T>
+int HashTable<T>::HashElement::key () const
+{
+  return m_key;
+}
+
+template<typename T>
+bool HashTable<T>::HashElement::operator== (const HashElement& other) const
+{
+  return this == &other;
+}
+
+template<typename T>
+bool HashTable<T>::HashElement::operator!= (const HashElement& other) const
+{
+  return this != &other;
 }

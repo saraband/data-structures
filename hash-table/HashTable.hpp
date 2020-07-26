@@ -8,8 +8,8 @@
 #include "../Utils.hpp"
 
 constexpr int HASH_TABLE_DEFAULT_CAPACITY = 100;
-constexpr int HASH_TABLE_GROW_RATIO = 2;
-constexpr float HASH_TABLE_GROW_THRESHOLD = 0.8f;
+constexpr int HASH_TABLE_CAPACITY_GROW_RATIO = 2;
+constexpr float HASH_TABLE_CAPACITY_GROW_THRESHOLD = 0.8f;
 
 template<typename T>
 class HashTable
@@ -17,28 +17,24 @@ class HashTable
   TESTABLE
 
   public:
-    struct HashElement
+    class HashElement
     {
-      HashElement (int k, T v)
-        : key     { k }
-        , value   { v }
-      {}
+      public:
+        HashElement ();
+        HashElement (int k, const T& v);
+        HashElement (const HashElement& other);
+        ~HashElement ();
+        const T& value () const;
+        int key () const;
+        bool operator== (const HashElement& other) const;
+        bool operator!= (const HashElement& other) const;
 
-      bool operator== (const HashElement& other) const
-      {
-        return this == &other;
-      }
-
-      bool operator!= (const HashElement& other) const
-      {
-        return this != &other;
-      }
-
-      int key;
-      T value;
+      private:
+        int   m_key;
+        T*    m_value;
     };
 
-    HashTable ();
+    HashTable (int baseCapacity = HASH_TABLE_DEFAULT_CAPACITY);
 
     int size () const;
     const HashElement& nil () const;
