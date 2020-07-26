@@ -39,6 +39,13 @@ class Graph
       return found->second;
     }
 
+    int size () const
+    {
+      return m_nodes.size();
+    }
+
+    std::string dijkstra (int a, int b) const;
+
   private:
 
     struct Edge
@@ -99,5 +106,6 @@ class Graph
 };
 
 #include "Graph.tpp"
+#include "Dijkstra.tpp"
 
 #endif

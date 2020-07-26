@@ -42,8 +42,8 @@ void Graph<graphType, T>::addEdge(int keyA, int keyB, int weight)
     return;
   }
 
-  nodeA->edges.insert({ keyB, new Edge(nodeA, weight) });
+  nodeA->edges.insert({ keyB, new Edge(nodeB, weight) });
 
   if (graphType == GraphType::UNDIRECTED)
-    nodeB->edges.insert({ keyA, new Edge(nodeB, weight) });
+    nodeB->edges.insert({ keyA, new Edge(nodeA, weight) });
 }

@@ -81,5 +81,21 @@ int main ()
     test::assertEq(graph.getNode(7)->getEdge(5)->weight, 10);
   });
 
+  test::registerTest("Dijkstra 1", []() {
+    Graph<GraphType::UNDIRECTED, int> graph;
+    graph.addNode(0, 0);
+    graph.addNode(1, 1);
+    graph.addNode(2, 2);
+    graph.addNode(3, 3);
+    graph.addNode(4, 4);
+    graph.addEdge(0, 1, 5);
+    graph.addEdge(0, 2, 10);
+    graph.addEdge(2, 3, 30);
+    graph.addEdge(2, 4, 20);
+    graph.addEdge(3, 4, 5);
+    
+    test::assertEq(graph.dijkstra(0, 3), "[35] 0 2 4 3 ");
+  });
+
   return 0;
 }
