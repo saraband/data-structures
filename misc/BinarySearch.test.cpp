@@ -2,7 +2,7 @@
 
 int main ()
 {
-  test::registerTest("Binary search an item that does not exist", [](){
+  test::registerTest("Binary search an item that does not exist", []() {
     std::vector<int> array{ 1, 2, 4, 5, 8, 16, 188, 255, 397 };
     int steps;
 
@@ -10,7 +10,7 @@ int main ()
     test::assertEq(steps, 4);
   });
 
-  test::registerTest("Binary search", [](){
+  test::registerTest("Binary search", []() {
     std::vector<int> array{ 1, 2, 4, 5, 8, 16, 188, 255, 397 };
     int steps;
 
@@ -18,7 +18,7 @@ int main ()
     test::assertEq(steps, 4);
   });
 
-  test::registerTest("Binary search an item that is at the end", [](){
+  test::registerTest("Binary search an item that is at the end", []() {
     std::vector<int> array{ 1, 2, 4, 5, 8, 16, 188, 255, 397 };
     int steps;
 
@@ -26,7 +26,7 @@ int main ()
     test::assertEq(steps, 1);
   });
 
-  test::registerTest("Binary search an item that is at the beginning", [](){
+  test::registerTest("Binary search an item that is at the beginning", []() {
     std::vector<int> array{ 1, 2, 4, 5, 8, 16, 188, 255, 397 };
     int steps;
 

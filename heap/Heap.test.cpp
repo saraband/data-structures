@@ -2,14 +2,14 @@
 
 int main ()
 {
-  test::registerTest("Initialize an empty heap", [](){
+  test::registerTest("Initialize an empty heap", []() {
     Heap<HeapType::MAX, int> heap;
 
     test::assertEq(heap.m_size, 0);
     test::assertEq(heap.state(), "");
   });
 
-  test::registerTest("MaxHeap: insert", [](){
+  test::registerTest("MaxHeap: insert", []() {
     Heap<HeapType::MAX, int> heap;
     heap.insert(10, 10);
     heap.insert(20, 20);
@@ -21,7 +21,7 @@ int main ()
     test::assertEq(heap.peek(), 40);
   });
 
-  test::registerTest("MinHeap: insert", [](){
+  test::registerTest("MinHeap: insert", []() {
     Heap<HeapType::MIN, int> heap;
     heap.insert(10, 10);
     heap.insert(20, 20);
@@ -33,7 +33,7 @@ int main ()
     test::assertEq(heap.peek(), 5);
   });
 
-  test::registerTest("MaxHeap: pop", [](){
+  test::registerTest("MaxHeap: pop", []() {
     Heap<HeapType::MAX, int> heap;
     heap.insert(-100, -100);
     heap.insert(42, 42);
@@ -46,7 +46,7 @@ int main ()
     test::assertEq(heap.peek(), 5);
   });
 
-  test::registerTest("MaxHeap: pop when empty", [](){
+  test::registerTest("MaxHeap: pop when empty", []() {
     Heap<HeapType::MAX, int> heap;
     heap.pop();
 
@@ -54,7 +54,7 @@ int main ()
     test::assertEq(heap.state(), "");
   });
 
-  test::registerTest("MinHeap: pop", [](){
+  test::registerTest("MinHeap: pop", []() {
     Heap<HeapType::MIN, int> heap;
     heap.insert(-100, -100);
     heap.insert(42, 42);
@@ -67,7 +67,7 @@ int main ()
     test::assertEq(heap.state(), "-50 42 5");
   });
 
-  test::registerTest("MinHeap: pop when empty", [](){
+  test::registerTest("MinHeap: pop when empty", []() {
     Heap<HeapType::MIN, int> heap;
     heap.pop();
 

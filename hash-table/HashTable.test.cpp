@@ -2,14 +2,14 @@
 
 int main ()
 {
-  test::registerTest("Empty HashTable", [](){
+  test::registerTest("Empty HashTable", []() {
     HashTable<int> map;
 
     test::assertEq(map.m_size, 0);
     test::assertEq(map.m_capacity, map.m_buckets.capacity());
   });
 
-  test::registerTest("set", [](){
+  test::registerTest("set", []() {
     HashTable<int> map;
     map.set(5, 5);
     map.set(105, 105);
@@ -23,7 +23,7 @@ int main ()
     test::assertEq(map.m_buckets[10].front().value(), 10);
   });
 
-  test::registerTest("set multiple time the same key", [](){
+  test::registerTest("set multiple time the same key", []() {
     HashTable<int> map;
     map.set(5, 5);
     map.set(5, 5);
@@ -32,7 +32,7 @@ int main ()
     test::assertEq(map.m_buckets[5].size(), 1);
   });
 
-  test::registerTest("get", [](){
+  test::registerTest("get", []() {
     HashTable<int> map;
     map.set(5, 50);
     map.set(10, 100);
@@ -41,14 +41,14 @@ int main ()
     test::assertEq(map.get(10).value(), 100);
   });
 
-  test::registerTest("get a key that does not exist", [](){
+  test::registerTest("get a key that does not exist", []() {
     HashTable<int> map;
     map.set(5, 5);
 
     test::assertEq(map.get(10) == map.nil(), true);
   });
 
-  test::registerTest("remove", [](){
+  test::registerTest("remove", []() {
     HashTable<int> map;
     map.set(5, 5);
     map.set(10, 10);
@@ -58,7 +58,7 @@ int main ()
     test::assertEq(map.get(10) == map.nil(), true);
   });
 
-  test::registerTest("grow capacity", [](){
+  test::registerTest("grow capacity", []() {
     HashTable<int> map(10);
 
     // Reach 60% capacity

@@ -2,14 +2,14 @@
 
 int main ()
 {
-  test::registerTest("Initialize empty vector", [](){
+  test::registerTest("Initialize empty vector", []() {
     Vector<int> vector;
 
     test::assertEq(vector.m_size, 0);
     test::assertEq(vector.m_capacity, DEFAULT_VECTOR_CAPACITY);
   });
 
-  test::registerTest("push_back", [](){
+  test::registerTest("push_back", []() {
     Vector<int> vector;
     vector.push_back(10);
     vector.push_back(20);
@@ -20,7 +20,7 @@ int main ()
     test::assertEq(vector.state(), "10 20 40");
   });
 
-  test::registerTest("push_front", [](){
+  test::registerTest("push_front", []() {
     Vector<int> vector;
     vector.push_front(10);
     vector.push_front(20);
@@ -31,7 +31,7 @@ int main ()
     test::assertEq(vector.state(), "40 20 10");
   });
 
-  test::registerTest("pop_back", [](){
+  test::registerTest("pop_back", []() {
     Vector<int> vector;
     vector.push_back(10);
     vector.push_back(20);
@@ -42,7 +42,7 @@ int main ()
     test::assertEq(vector.state(), "10");
   });
 
-  test::registerTest("pop_back vector is empty", [](){
+  test::registerTest("pop_back vector is empty", []() {
     Vector<int> vector;
     vector.pop_back();
 
@@ -51,7 +51,7 @@ int main ()
     test::assertEq(vector.state(), "");
   });
 
-  test::registerTest("pop_front", [](){
+  test::registerTest("pop_front", []() {
     Vector<int> vector;
     vector.push_front(10);
     vector.push_front(20);
@@ -62,7 +62,7 @@ int main ()
     test::assertEq(vector.state(), "10");
   });
 
-  test::registerTest("pop_front when vector is empty", [](){
+  test::registerTest("pop_front when vector is empty", []() {
     Vector<int> vector;
     vector.pop_front();
 
@@ -71,7 +71,7 @@ int main ()
     test::assertEq(vector.state(), "");
   });
 
-  test::registerTest("reserve", [](){
+  test::registerTest("reserve", []() {
     Vector<int> vector;
     vector.reserve(200);
 
@@ -80,7 +80,7 @@ int main ()
     test::assertEq(vector.state(), "");
   });
   
-  test::registerTest("reserve to a smaller capacity", [](){
+  test::registerTest("reserve to a smaller capacity", []() {
     Vector<int> vector;
     vector.reserve(10);
 
@@ -89,7 +89,7 @@ int main ()
     test::assertEq(vector.state(), "");
   });
 
-  test::registerTest("operator[]", [](){
+  test::registerTest("operator[]", []() {
     Vector<int> vector;
     vector.push_back(10);
     vector.push_back(20);

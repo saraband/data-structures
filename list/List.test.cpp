@@ -2,7 +2,7 @@
 
 int main ()
 {
-  test::registerTest("Initialize empty list", [](){
+  test::registerTest("Initialize empty list", []() {
     List<int> list;
 
     test::assertEq(list.m_size, 0);
@@ -11,7 +11,7 @@ int main ()
     test::assertEq(list.m_tail, nullptr);
   });
 
-  test::registerTest("push_back", [](){
+  test::registerTest("push_back", []() {
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -22,7 +22,7 @@ int main ()
     test::assertEq(list.tail(), 20);
   });
 
-  test::registerTest("push_front", [](){
+  test::registerTest("push_front", []() {
     List<int> list;
     list.push_front(10);
     list.push_front(20);
@@ -33,7 +33,7 @@ int main ()
     test::assertEq(list.tail(), 10);
   });
 
-  test::registerTest("pop_back", [](){
+  test::registerTest("pop_back", []() {
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -45,7 +45,7 @@ int main ()
     test::assertEq(list.tail(), 10);
   });
 
-  test::registerTest("pop_back when list is empty", [](){
+  test::registerTest("pop_back when list is empty", []() {
     List<int> list;
     list.pop_back();
 
@@ -55,7 +55,7 @@ int main ()
     test::assertEq(list.m_tail, nullptr);
   });
 
-  test::registerTest("pop_front", [](){
+  test::registerTest("pop_front", []() {
     List<int> list;
     list.push_front(10);
     list.push_front(20);
@@ -67,7 +67,7 @@ int main ()
     test::assertEq(list.tail(), 10);
   });
 
-  test::registerTest("pop_front when list is empty", [](){
+  test::registerTest("pop_front when list is empty", []() {
     List<int> list;
     list.pop_front();
 
@@ -77,7 +77,7 @@ int main ()
     test::assertEq(list.m_tail, nullptr);
   });
 
-  test::registerTest("find", [](){
+  test::registerTest("find", []() {
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -90,7 +90,7 @@ int main ()
     test::assertEq(node->next->value, 80);
   });
 
-  test::registerTest("find when the element does not exists", [](){
+  test::registerTest("find when the element does not exists", []() {
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -99,7 +99,7 @@ int main ()
     test::assertEq(node, nullptr);
   });
 
-  test::registerTest("insertAfter", [](){
+  test::registerTest("insertAfter", []() {
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -110,7 +110,7 @@ int main ()
     test::assertEq(list.state(), "10 20 40");
   });
 
-  test::registerTest("insertBefore", [](){
+  test::registerTest("insertBefore", []() {
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -121,7 +121,7 @@ int main ()
     test::assertEq(list.state(), "5 10 20");
   });
 
-  test::registerTest("swap", [](){
+  test::registerTest("swap", []() {
     List<int> list;
     list.push_back(10);
     list.push_back(20);
@@ -134,7 +134,7 @@ int main ()
     test::assertEq(list.state(), "40 20 10 80");
   });
 
-  test::registerTest("swap adjacent nodes", [](){
+  test::registerTest("swap adjacent nodes", []() {
     List<int> list;
     list.push_back(10);
     list.push_back(20);

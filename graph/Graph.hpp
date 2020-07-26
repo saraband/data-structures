@@ -25,43 +25,33 @@ class Graph
   struct Node;
 
   public:
-    Graph () {}
-    ~Graph ()
+    Graph ();
+    ~Graph ();
+    void addNode (int key, T value);
+    void addEdge(int keyA, int keyB, int weight = 1);
+    Node* getNode (int key) const
     {
-      for (auto& node : m_nodes)
-        delete node.second;
-    }
+      auto found = m_nodes.find(key);
 
-    void addNode (int key, T value)
-    {
-      if (m_nodes.find(key) != m_nodes.end()) {
-        // @TODO throw ? or not ?
-        std::cout << "Error: Duplicate key '" + toString(key) + "' in graph." << std::endl;
-        return;
-      }
-
-      m_nodes.insert({ key, new Node(key, value) });
-    }
-
-    void addEdge(int keyA, int keyB, int weight = 1)
-    {
-      auto nodeA = m_nodes.find(keyA);
-      auto nodeB = m_nodes.find(keyB);
-
-      if (nodeA == m_nodes.end() || nodeB == m_nodes.end()) {
-        // @TODO better error handling
-        std::cout << "Error: Unable to create edge between keys '" + toString(keyA);
-        std::cout << "' and '"  + toString(keyB) + "' in graph.";
-        return;
-      }
-
-      nodeA->second->edges.insert({ keyB, weight });
-
-      if (graphType == GraphType::UNDIRECTED)
-        nodeB->second->edges.insert({ keyA, weight });
+      if (found == m_nodes.end())
+        return nullptr;
+      
+      return found->second;
     }
 
   private:
+
+    struct Edge
+    {
+      Edge (Node* d, int w = 1)
+        : destination   { d }
+        , weight        { w }
+      {}
+
+      int       weight;
+      Node*     destination;
+    };
+
     struct Node
     {
       Node (int k, T v)
@@ -69,12 +59,22 @@ class Graph
         , value   { v }
       {}
 
+      Edge* getEdge (int key) const
+      {
+        auto found = edges.find(key);
+
+        if (found == edges.end())
+          return nullptr;
+        
+        return found->second;
+      }
+
       int                             key;
       T                               value;
-      std::unordered_map<int, int>    edges;
+      std::unordered_map<int, Edge*>  edges;
     };
 
-    // For testing
+    // For testing @TODO is this necessary ?
     std::string state () const
     {
       std::string state;
@@ -86,10 +86,7 @@ class Graph
         state += toString(nodeKey) + "[ ";
         
         for (auto& edge : nodeEdges) {
-          int destination = edge.first;
-          int weight = edge.second;
-
-          state += toString(destination) + ':' + toString(weight) + ' ';
+          state += toString(edge.second->destination) + ':' + toString(edge.second->weight) + ' ';
         }
 
         state += "] ";
@@ -100,5 +97,7 @@ class Graph
 
     std::unordered_map<int, Node*>   m_nodes;
 };
+
+#include "Graph.tpp"
 
 #endif
