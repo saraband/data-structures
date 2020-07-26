@@ -60,5 +60,26 @@ int main ()
     test::assertEq(graph.getNode(15)->getEdge(5), nullptr);
   });
 
+  test::registerTest("Unweighted graph", []() {
+    Graph<GraphType::UNDIRECTED, int> graph;
+    graph.addNode(5, 5);
+    graph.addNode(7, 7);
+    graph.addEdge(5, 7);
+
+    test::assertEq(graph.getNode(5)->getEdge(7)->weight, 1);
+    test::assertEq(graph.getNode(7)->getEdge(5)->weight, 1);
+  });
+
+  test::registerTest("Weighted graph", []() {
+    Graph<GraphType::DIRECTED, int> graph;
+    graph.addNode(5, 5);
+    graph.addNode(7, 7);
+    graph.addEdge(5, 7, 50);
+    graph.addEdge(7, 5, 10);
+
+    test::assertEq(graph.getNode(5)->getEdge(7)->weight, 50);
+    test::assertEq(graph.getNode(7)->getEdge(5)->weight, 10);
+  });
+
   return 0;
 }
