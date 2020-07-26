@@ -2,6 +2,9 @@
 
 int main ()
 {
-  LRUCache<std::string, std::string> cache;
+  LRUCache cache;
+  cache.set(5, 'a');
+  cache.set(5, 'a');
+  
   return 0;
 }

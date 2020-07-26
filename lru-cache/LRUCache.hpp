@@ -5,34 +5,81 @@
 #include <unordered_map>
 #include <list>
 
+// @TODO  clean + template
+
 constexpr int DEFAULT_LRU_CACHE_CAPACITY = 100;
 
-template<typename T, typename U>
+using LRUIterator = std::list<int>::iterator;
+
 class LRUCache
 {
   public:
     struct Node
     {
-      Node (U* v, std::list<T>::iterator it);
-      Node (const Node& other);
-      ~Node ();
+      Node (int k, char v, LRUIterator i)
+        : key       { k }
+        , value     { v }
+        , lruItem   { i }
+      {}
 
-      U*                      m_value;
-      std::list<T>::iterator  m_iterator;
+      int           key;
+      char          value;
+      LRUIterator   lruItem;
     };
 
-    LRUCache (int capacity = DEFAULT_LRU_CACHE_CAPACITY);
-    ~LRUCache ();
-    const T* get (T key) const;
-    void set (T key, const U& value);
-    int size () const;
+    LRUCache (int capacity = DEFAULT_LRU_CACHE_CAPACITY)
+      : m_capacity { capacity }
+    {}
+
+/*     char get (int key) const
+    {
+      auto node = m_cache.find(key);
+
+      if (node == m_cache.end()) {
+        std::cout << "Cannot get key " << key << std::endl; // @TODO
+        return 'z';
+      }
+      
+      std::iter_swap(m_lru.begin(), node->second.lruItem);
+
+      checkSize(); // @TODO better name
+
+      return node->second.value;
+    }
+
+    void checkSize ()
+    {
+      while (m_lru.size() > m_capacity) {
+        m_cache.erase(m_lru.begin()->key);
+        m_lru.pop_back();
+      }
+    } */
+
+    void set (int key, char value)
+    {
+      auto node = m_cache.find(key);
+
+      // Does not exist yet
+      if (node == m_cache.end()) {
+        m_lru.push_front(key);
+        m_cache.insert({ key, Node(key, value, m_lru.begin()) });
+      } else {
+        std::iter_swap(m_lru.begin(), node->second.lruItem);
+        // @TODO this swaps the values
+      }
+
+      // checkSize();
+    }
+
+    int size () const
+    {
+      return m_lru.size();
+    }
 
   private:
-    int                             m_capacity;
-    std::unordered_map<T, Node*>    m_map;
-    std::list<T>                    m_lru;
+    int                               m_capacity;
+    std::unordered_map<int, Node>     m_cache;
+    std::list<int>                    m_lru;
 };
-
-#include "LRUCache.tpp"
 
 #endif
