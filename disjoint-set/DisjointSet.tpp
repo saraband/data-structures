@@ -1,13 +1,15 @@
 #include "DisjointSet.hpp"
 
-DisjointSet::DisjointSet (const std::vector<int>& array)
+template<typename T>
+DisjointSet<T>::DisjointSet (const std::vector<T>& array)
 {
-  for (int key : array) {
+  for (T key : array) {
     m_sets[key] = key;
   }
 }
 
-void DisjointSet::unite (int a, int b)
+template<typename T>
+void DisjointSet<T>::unite (T a, T b)
 {
   int aRep = find(a);
   int bRep = find(b);
@@ -28,14 +30,15 @@ void DisjointSet::unite (int a, int b)
   }
 }
 
-int DisjointSet::find (int key)
+template<typename T>
+int DisjointSet<T>::find (T key)
 {
-  int parent = m_sets.find(key)->second;
+  T parent = m_sets.find(key)->second;
 
   if (key == parent)
     return key;
 
-  int rep = find(parent);
+  T rep = find(parent);
   m_sets[key] = rep;
 
   // Reset rank for this set as it has been compressed
