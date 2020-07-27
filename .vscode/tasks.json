@@ -12,13 +12,13 @@
         "${fileDirname}\\${fileBasenameNoExtension}.cpp",
         "-o",
         "${fileDirname}\\${fileBasenameNoExtension}.exe",
-        ";",
-        "${fileDirname}\\${fileBasenameNoExtension}.exe"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "problemMatcher": ["$gcc"],
+      "problemMatcher": [
+        "$gcc"
+      ],
       "group": {
         "kind": "build",
         "isDefault": true

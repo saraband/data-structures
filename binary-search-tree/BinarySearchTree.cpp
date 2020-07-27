@@ -11,7 +11,7 @@ int main ()
   tree.insert(15, 15);
   // tree.insert(27, 27);
 
-  std::cout << tree.state() << std::endl;
+  // std::cout << tree.state() << std::endl;
   
   return 0;
 }
