@@ -59,14 +59,15 @@ class LRUCache
     {
       auto node = m_cache.find(key);
 
-      // Does not exist yet
-      if (node == m_cache.end()) {
-        m_lru.push_front(key);
-        m_cache.insert({ key, Node(key, value, m_lru.begin()) });
-      } else {
-        std::iter_swap(m_lru.begin(), node->second.lruItem);
+      // Already exists, erase in lru list
+      if (node != m_cache.end()) {
+        m_lru.erase(node->second.lruItem);
         // @TODO this swaps the values
       }
+
+      // Push front in lru
+      m_lru.push_front(key);
+      m_cache.insert_or_assign({ key, Node(key, value, m_lru.begin()) });
 
       // checkSize();
     }
