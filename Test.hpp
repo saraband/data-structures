@@ -7,18 +7,9 @@
 
 #define TESTABLE friend int main ();
 
-#define assertEq(A, B) __assertEq(A, B, std::string(#A) + " == " + std::string(#B))
-#define assertThrow(FN) __assertThrow<std::runtime_error>(FN, std::string(#FN) + " should throw a std::runtime_error")
-
-namespace
-{
-void __assert (bool condition, const std::string& exp)
-{
-  if (!condition) {
-    std::cout << "  Assertion failed: " << exp << std::endl;
-  }
-}
-}
+#define expect(EXPRESSION) __expect(EXPRESSION, std::string(#EXPRESSION))
+#define expectThrow(FN) __expectThrow(FN, true, std::string(#FN) + " should throw")
+#define expectNoThrow(FN) __expectThrow(FN, false, std::string(#FN) + " should NOT throw")
 
 namespace test
 {
@@ -29,30 +20,25 @@ void registerTest (std::string name, T fn)
   fn();
 }
 
-template<typename T, typename U>
-void __assertEq (T a, U b, const std::string& exp)
+void __expect (bool expression, const std::string& message)
 {
-  __assert(a == b, exp);
+  if (!expression)
+    std::cerr << "  Assertion failed: " << message << std::endl;
 }
 
-template<>
-void __assertEq (std::string a, const char* b, const std::string& exp)
-{
-  __assert(a.compare(b) == 0, exp);
-}
-
-template<typename U, typename T>
-void __assertThrow (const T& fn, const std::string& exp)
+template<typename FunctionType>
+void __expectThrow (const FunctionType& fn, bool shouldThrow, const std::string& message)
 {
   bool hasThrown = false;
 
   try {
     fn();
-  } catch (const U& exception) {
+  } catch (const std::runtime_error& exception) {
     hasThrown = true;
   }
 
-  __assert(hasThrown, exp);
+  if (hasThrown != shouldThrow)
+    std::cerr << "  Assertion failed: " << message << std::endl;
 }
 }
 

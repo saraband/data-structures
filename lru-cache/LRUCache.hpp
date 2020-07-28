@@ -66,8 +66,8 @@ class LRUCache
       }
 
       // Push front in lru
-      m_lru.push_front(key);
-      m_cache.insert_or_assign({ key, Node(key, value, m_lru.begin()) });
+      // m_lru.push_front(key);
+      // m_cache.insert_or_assign({ key, Node(key, value, m_lru.begin()) });
 
       // checkSize();
     }
