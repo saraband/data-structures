@@ -45,6 +45,7 @@ class Graph
     }
 
     std::string dijkstra (int a, int b) const;
+    std::string kruskal () const;
 
   private:
 
@@ -103,6 +104,7 @@ class Graph
     }
 
     std::unordered_map<int, Node*>   m_nodes;
+    int                              m_numEdges;
 };
 
 #include "Graph.tpp"

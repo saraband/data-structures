@@ -2,6 +2,7 @@
 
 template<GraphType::GraphType graphType, typename T>
 Graph<graphType, T>::Graph ()
+  : m_numEdges { 0 }
 {
 
 }
@@ -46,4 +47,6 @@ void Graph<graphType, T>::addEdge(int keyA, int keyB, int weight)
 
   if (graphType == GraphType::UNDIRECTED)
     nodeB->edges.insert({ keyA, new Edge(nodeA, weight) });
+  
+  m_numEdges++;
 }
