@@ -4,28 +4,40 @@ template<typename T>
 DisjointSet<T>::DisjointSet (const std::vector<T>& array)
 {
   for (T key : array) {
-    m_sets[key] = key;
+    m_parents[key] = key;
   }
 }
 
 template<typename T>
 void DisjointSet<T>::unite (T a, T b)
 {
+  // Find a and b representatives
   T aRep = find(a);
   T bRep = find(b);
 
+  // a and b already in the same set
   if (aRep == bRep)
     return;
 
-  int aRank = (m_ranks.find(aRep) == m_ranks.end()) || 0;
-  int bRank = (m_ranks.find(bRep) == m_ranks.end()) || 0;
+  // Find ranks for a and b sets
+  auto aRankValue = m_ranks.find(aRep);
+  auto bRankValue = m_ranks.find(bRep);
+  int aRank = aRankValue == m_ranks.end()
+    ? 0
+    : aRankValue->second;
+  int bRank = bRankValue == m_ranks.end()
+    ? 0
+    : bRankValue->second;
 
+  // Append the tree with the lowest rank to the highest
   if (aRank < bRank) {
-    m_sets[aRep] = bRep;
+    m_parents[aRep] = bRep;
   } else if (aRank > bRank) {
-    m_sets[bRep] = aRep;
+    m_parents[bRep] = aRep;
+
+  // Same rank, append arbitrarily
   } else {
-    m_sets[aRep] = bRep;
+    m_parents[aRep] = bRep;
     m_ranks.insert_or_assign(bRep, bRank + 1);
   }
 }
@@ -33,16 +45,18 @@ void DisjointSet<T>::unite (T a, T b)
 template<typename T>
 T DisjointSet<T>::find (T key)
 {
-  T parent = m_sets.find(key)->second;
+  // Find direct parent of element
+  T parent = m_parents.find(key)->second;
 
+  // Direct parent is the representative
   if (key == parent)
     return key;
 
+  // Search recursively in the parents which is the representative
   T rep = find(parent);
-  m_sets[key] = rep;
 
-  // Reset rank for this set as it has been compressed
-  m_ranks[rep] = 0;
+  // Compress the path to the representative by making it the direct parent
+  m_parents[key] = rep;
 
   return rep;
 }

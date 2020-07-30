@@ -5,16 +5,21 @@
 #include <unordered_map>
 #include <vector>
 
+#include "../Test.hpp"
+#include "../Utils.hpp"
+
 template<typename T>
 class DisjointSet
 {
+  TESTABLE
+
   public:
     DisjointSet (const std::vector<T>& array);
     void unite (T a, T b);
     T find (T key);
 
   private:
-    std::unordered_map<T, T>    m_sets;
+    std::unordered_map<T, T>    m_parents;
     std::unordered_map<T, int>  m_ranks;
 };
 
