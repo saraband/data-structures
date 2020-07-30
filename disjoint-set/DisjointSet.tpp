@@ -11,8 +11,8 @@ DisjointSet<T>::DisjointSet (const std::vector<T>& array)
 template<typename T>
 void DisjointSet<T>::unite (T a, T b)
 {
-  int aRep = find(a);
-  int bRep = find(b);
+  T aRep = find(a);
+  T bRep = find(b);
 
   if (aRep == bRep)
     return;
@@ -31,7 +31,7 @@ void DisjointSet<T>::unite (T a, T b)
 }
 
 template<typename T>
-int DisjointSet<T>::find (T key)
+T DisjointSet<T>::find (T key)
 {
   T parent = m_sets.find(key)->second;
 

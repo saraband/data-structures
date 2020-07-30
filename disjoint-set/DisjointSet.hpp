@@ -11,7 +11,7 @@ class DisjointSet
   public:
     DisjointSet (const std::vector<T>& array);
     void unite (T a, T b);
-    int find (T key);
+    T find (T key);
 
   private:
     std::unordered_map<T, T>    m_sets;
