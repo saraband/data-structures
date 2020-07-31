@@ -7,18 +7,13 @@
 #include "../Test.hpp"
 #include "../Utils.hpp"
 
-// @TODO this does not work
 template<typename T>
-int binarySearchFindIndex (const std::vector<T>& array, T value, int* steps) {
+int binarySearchFindIndex (const std::vector<T>& array, T value, int* steps = nullptr) {
   if (!array.size())
     return -1;
 
   int lowerBound = 0;
   int upperBound = array.size() - 1;
-
-  // For testing complexity
-  if (steps)
-    *steps = 0;
 
   do {
     // For testing complexity
@@ -31,7 +26,7 @@ int binarySearchFindIndex (const std::vector<T>& array, T value, int* steps) {
       return upperBound;
     
     if (lowerBound + 1 == upperBound)
-      break;
+      return -1;
 
     int middleIndex = lowerBound + floor((static_cast<float>(upperBound) - lowerBound) / 2);
     

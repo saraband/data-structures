@@ -5,82 +5,44 @@
 #include <unordered_map>
 #include <list>
 
-// @TODO  clean + template
+#include "../Test.hpp"
+#include "../Utils.hpp"
 
 constexpr int DEFAULT_LRU_CACHE_CAPACITY = 100;
 
 using LRUIterator = std::list<int>::iterator;
 
+template<typename KeyType, typename ValueType>
 class LRUCache
 {
+  TESTABLE
+  
   public:
     struct Node
     {
-      Node (int k, char v, LRUIterator i)
+      Node (const KeyType& k, const ValueType& v, LRUIterator i)
         : key       { k }
         , value     { v }
         , lruItem   { i }
       {}
 
-      int           key;
-      char          value;
-      LRUIterator   lruItem;
+      KeyType         key;
+      ValueType       value;
+      LRUIterator     lruItem;
     };
 
-    LRUCache (int capacity = DEFAULT_LRU_CACHE_CAPACITY)
-      : m_capacity { capacity }
-    {}
-
-/*     char get (int key) const
-    {
-      auto node = m_cache.find(key);
-
-      if (node == m_cache.end()) {
-        std::cout << "Cannot get key " << key << std::endl; // @TODO
-        return 'z';
-      }
-      
-      std::iter_swap(m_lru.begin(), node->second.lruItem);
-
-      checkSize(); // @TODO better name
-
-      return node->second.value;
-    }
-
-    void checkSize ()
-    {
-      while (m_lru.size() > m_capacity) {
-        m_cache.erase(m_lru.begin()->key);
-        m_lru.pop_back();
-      }
-    } */
-
-    void set (int key, char value)
-    {
-      auto node = m_cache.find(key);
-
-      // Already exists, erase in lru list
-      if (node != m_cache.end()) {
-        m_lru.erase(node->second.lruItem);
-        // @TODO this swaps the values
-      }
-
-      // Push front in lru
-      // m_lru.push_front(key);
-      // m_cache.insert_or_assign({ key, Node(key, value, m_lru.begin()) });
-
-      // checkSize();
-    }
-
-    int size () const
-    {
-      return m_lru.size();
-    }
+    LRUCache (int capacity = DEFAULT_LRU_CACHE_CAPACITY);
+    const ValueType& get (const KeyType& key);
+    void checkSize ();
+    void set (const KeyType& key, const ValueType& value);
+    int size () const;
 
   private:
-    int                               m_capacity;
-    std::unordered_map<int, Node>     m_cache;
-    std::list<int>                    m_lru;
+    int                                   m_capacity;
+    std::unordered_map<KeyType, Node>     m_cache;
+    std::list<KeyType>                    m_lru;
 };
+
+#include "LRUCache.tpp"
 
 #endif
