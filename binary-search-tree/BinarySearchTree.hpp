@@ -221,26 +221,29 @@ class BinarySearchTree
 
           // Rotate left
           if (isLeftNode) {
+            Node* oldParentRight = parent->right;
             parent->parent = grandparent->parent;
-
-            // This line makes the whole thing crash
-            
             parent->right = grandparent;
             grandparent->parent = parent;
-            grandparent->left = parent->right;
+            grandparent->left = oldParentRight;
 
-            if (parent->right)
-              parent->right->parent = grandparent;
+            if (oldParentRight)
+              oldParentRight->parent = grandparent;
           // Rotate right
           } else {
+            Node* oldParentLeft = parent->left;
             parent->parent = grandparent->parent;
             parent->left = grandparent;
             grandparent->parent = parent;
-            grandparent->right = parent->left;
+            grandparent->right = oldParentLeft;
 
-            if (parent->left)
-              parent->left->parent = grandparent;
+            if (oldParentLeft)
+              oldParentLeft->parent = grandparent;
           }
+
+          // Recolor original parent and grandparent
+          parent->color = Node::BLACK;
+          grandparent->color = Node::RED;
         }
 
         restoreSubtreeBalance(parent);
