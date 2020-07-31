@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 
+// @TODO prim ?
 // @TODO pour dijkstra et kruskal trouver un moyen de checker si les conditions pour l'algorithme sont bien présente
 // i.e. pour dijkstra => ponderation non négative et pour kruskal aussi
 template<GraphType::GraphType graphType, typename T>
