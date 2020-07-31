@@ -14,9 +14,9 @@
 namespace test
 {
 template<typename T>
-void registerTest (std::string name, T fn)
+void registerTest (const std::string& name, T fn)
 {
-  std::cout << name << std::endl;
+  std::cerr << name << std::endl;
   fn();
 }
 

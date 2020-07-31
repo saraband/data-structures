@@ -7,7 +7,6 @@
 #include "../Test.hpp"
 #include "../Utils.hpp"
 
-// @TODO unbalanced, avl
 namespace BSTType
 {
 enum BSTType {
@@ -161,7 +160,7 @@ class BinarySearchTree
 
       // Root of the tree is red, recolor it black
       if (!node->parent) {
-        node->color = Node::RED;
+        node->color = Node::BLACK;
         return;
       }
 

@@ -7,8 +7,6 @@
 #include "../Test.hpp"
 #include "../Utils.hpp"
 
-// @TODO swap, binary_search
-
 constexpr int DEFAULT_VECTOR_CAPACITY = 100;
 
 template<typename T>
@@ -69,6 +67,7 @@ class Vector
 
     void reserve (int capacity)
     {
+      // @TODO
       if (capacity <= m_capacity)
         return;
 
@@ -92,21 +91,6 @@ class Vector
     }
 
   private:
-    // For testing
-    std::string state () const
-    {
-      std::string state;
-
-      for (int i = 0; i < m_size; i++) {
-        state += toString(m_array[i]);
-
-        if (i < m_size - 1)
-          state +=  ' ';
-      }
-
-      return state;
-    }
-
     int   m_capacity;
     int   m_size;
     T*    m_array;
