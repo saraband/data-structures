@@ -4,6 +4,7 @@
 #include "BinarySearchTree.hpp"
 
 // @TODO  b+tree, b-tree
+// @TODO template KeyType + split in tpp for all
 
 int main ()
 {

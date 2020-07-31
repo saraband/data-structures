@@ -1,21 +1,21 @@
 #include "List.hpp"
 
-template<typename T>
-List<T>::List ()
+template<typename ValueType>
+List<ValueType>::List ()
   : m_head  { nullptr }
   , m_tail  { nullptr }
   , m_size  { 0 }
 {}
 
-template<typename T>
-List<T>::~List ()
+template<typename ValueType>
+List<ValueType>::~List ()
 {
   // Recursively delete all nodes starting from the head
   deleteNode(m_head);
 }
 
-template<typename T>
-void List<T>::push_back (T item)
+template<typename ValueType>
+void List<ValueType>::push_back (const ValueType& item)
 {
   Node* node = new Node(item);
 
@@ -34,8 +34,8 @@ void List<T>::push_back (T item)
   m_size++;
 }
 
-template<typename T>
-void List<T>::push_front (T item)
+template<typename ValueType>
+void List<ValueType>::push_front (const ValueType& item)
 {
   Node* node = new Node(item);
 
@@ -54,8 +54,8 @@ void List<T>::push_front (T item)
   m_size++;
 }
 
-template<typename T>
-void List<T>::pop_front ()
+template<typename ValueType>
+void List<ValueType>::pop_front ()
 {
   if (!m_size)
     return;
@@ -77,8 +77,8 @@ void List<T>::pop_front ()
   delete oldHead;
 }
 
-template<typename T>
-void List<T>::pop_back ()
+template<typename ValueType>
+void List<ValueType>::pop_back ()
 {
   if (!m_size)
     return;
@@ -100,8 +100,8 @@ void List<T>::pop_back ()
   delete oldTail;
 }
 
-template<typename T>
-typename List<T>::Node* List<T>::find (T item)
+template<typename ValueType>
+typename List<ValueType>::Node* List<ValueType>::find (const ValueType& item)
 {
   Node* node = m_head;
 
@@ -115,8 +115,8 @@ typename List<T>::Node* List<T>::find (T item)
   return nullptr;
 }
 
-template<typename T>
-void List<T>::insertAfter (List<T>::Node* node, T item)
+template<typename ValueType>
+void List<ValueType>::insertAfter (List<ValueType>::Node* node, const ValueType& item)
 {
   if (!node)
     return;
@@ -136,8 +136,8 @@ void List<T>::insertAfter (List<T>::Node* node, T item)
   m_size++;
 }
 
-template<typename T>
-void List<T>::insertBefore (List<T>::Node* node, T item)
+template<typename ValueType>
+void List<ValueType>::insertBefore (List<ValueType>::Node* node, const ValueType& item)
 {
   if (!node)
     return;
@@ -157,8 +157,8 @@ void List<T>::insertBefore (List<T>::Node* node, T item)
   m_size++;
 }
 
-template<typename T>
-void List<T>::swap (List<T>::Node* a, List<T>::Node* b)
+template<typename ValueType>
+void List<ValueType>::swap (List<ValueType>::Node* a, List<ValueType>::Node* b)
 {
   // Swapping requires at least 2 nodes
   if (m_size < 2)
@@ -209,46 +209,27 @@ void List<T>::swap (List<T>::Node* a, List<T>::Node* b)
   }
 }
 
-template<typename T>
-T List<T>::head () const
+template<typename ValueType>
+const ValueType& List<ValueType>::head () const
 {
   return m_head->value;
 }
 
-template<typename T>
-T List<T>::tail () const
+template<typename ValueType>
+const ValueType& List<ValueType>::tail () const
 {
   return m_tail->value;
 }
 
-template<typename T>
-int List<T>::size () const
+template<typename ValueType>
+int List<ValueType>::size () const
 {
   return m_size;
 }
 
-// For testing
-template<typename T>
-std::string List<T>::state () const
-{
-  std::string state;
-  Node* current = m_head;
-
-  while (current) {
-    state += toString(current->value);
-
-    if (current->next)
-      state += ' ';
-
-    current = current->next;
-  }
-
-  return state;
-}
-
 // Deletes a node and all the next nodes recursively
-template<typename T>
-void List<T>::deleteNode (List<T>::Node* node)
+template<typename ValueType>
+void List<ValueType>::deleteNode (List<ValueType>::Node* node)
 {
   if (node == nullptr)
     return;

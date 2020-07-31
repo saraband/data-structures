@@ -4,7 +4,7 @@
 #include "../Test.hpp"
 #include "../Utils.hpp"
 
-template<typename T>
+template<typename ValueType>
 class List
 {
   TESTABLE
@@ -12,33 +12,32 @@ class List
   public:
     struct Node
     {
-      Node (T v)
+      Node (const ValueType& v)
         : value     { v }
         , next      { nullptr }
         , previous  { nullptr }
       {}
-
-      Node*   next;
-      Node*   previous;
-      T       value;
+      
+      ValueType   value;
+      Node*       next;
+      Node*       previous;
     };
 
     List ();
     ~List ();
-    void push_back (T item);
-    void push_front (T item);
+    void push_back (const ValueType& item);
+    void push_front (const ValueType& item);
     void pop_front ();
     void pop_back ();
-    Node* find (T item);
-    void insertAfter (Node* node, T item);
-    void insertBefore (Node* node, T item);
+    Node* find (const ValueType& item);
+    void insertAfter (Node* node, const ValueType& item);
+    void insertBefore (Node* node, const ValueType& item);
     void swap (Node* a, Node* b);
-    T head () const;
-    T tail () const;
+    const ValueType& head () const;
+    const ValueType& tail () const;
     int size () const;
 
   private:
-    std::string state () const;
     void deleteNode (Node* node);
 
     Node*   m_head;
