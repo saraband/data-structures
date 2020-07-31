@@ -14,7 +14,9 @@ class DisjointSet
   TESTABLE
 
   public:
+    DisjointSet ();
     DisjointSet (const std::vector<T>& array);
+    void add (T key);
     void unite (T a, T b);
     T find (T key);
 

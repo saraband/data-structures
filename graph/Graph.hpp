@@ -45,7 +45,7 @@ class Graph
     }
 
     std::string dijkstra (int a, int b) const;
-    std::string kruskal () const;
+    std::list<std::pair<int, int>> kruskal () const;
 
   private:
 
@@ -109,5 +109,6 @@ class Graph
 
 #include "Graph.tpp"
 #include "Dijkstra.tpp"
+#include "Kruskal.tpp"
 
 #endif

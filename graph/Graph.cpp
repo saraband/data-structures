@@ -4,7 +4,17 @@
 
 int main ()
 {
-  test::registerTest("Initialize graph", []() {
+  Graph<GraphType::UNDIRECTED, int> g;
+  g.addNode(5, 5);
+  g.addNode(6, 6);
+  g.addNode(7, 7);
+  g.addNode(8, 8);
+  g.addEdge(5, 6, 4);
+  g.addEdge(5, 7, 1);
+  g.addEdge(6, 7, 2);
+  g.addEdge(7, 8, 15);
+  g.kruskal();
+/*   test::registerTest("Initialize graph", []() {
     Graph<GraphType::UNDIRECTED, int> uGraph;
     Graph<GraphType::DIRECTED, int> dGraph;
 
@@ -98,6 +108,6 @@ int main ()
     
     test::expect(graph.dijkstra(0, 3) == "[35] 0 2 4 3 ");
   });
-
+ */
   return 0;
 }

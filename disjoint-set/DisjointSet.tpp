@@ -1,11 +1,24 @@
 #include "DisjointSet.hpp"
 
 template<typename T>
+DisjointSet<T>::DisjointSet ()
+{
+  
+}
+
+template<typename T>
 DisjointSet<T>::DisjointSet (const std::vector<T>& array)
 {
   for (T key : array) {
-    m_parents[key] = key;
+    add(key);
   }
+}
+
+
+template<typename T>
+void DisjointSet<T>::add (T key)
+{
+  m_parents[key] = key;
 }
 
 template<typename T>
