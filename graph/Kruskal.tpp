@@ -4,13 +4,13 @@
 #include "../disjoint-set/DisjointSet.hpp"
 
 template<GraphType::GraphType graphType, typename T>
-std::list<std::pair<int, int>> Graph<graphType, T>::kruskal () const
+std::vector<std::pair<int, int>> Graph<graphType, T>::kruskal () const
 {
   using namespace std;
   using Edge = pair<int, pair<int, int>>; // [ weight, [ keyA, keyB ] ]
 
   // Edges forming the result graph
-  std::list<std::pair<int, int>> result;
+  std::vector<std::pair<int, int>> result;
 
   if (!m_numEdges)
     return result;

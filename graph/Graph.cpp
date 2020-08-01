@@ -1,26 +1,12 @@
 #include "Graph.hpp"
 
-// @TODO replace all ::assertEq and ::assertThrow by ::expect, ::expectThrow/noThrow
-
 int main ()
 {
-  Graph<GraphType::UNDIRECTED, int> g;
-  g.addNode(5, 5);
-  g.addNode(6, 6);
-  g.addNode(7, 7);
-  g.addNode(8, 8);
-  g.addEdge(5, 6, 4);
-  g.addEdge(5, 7, 1);
-  g.addEdge(6, 7, 2);
-  g.addEdge(7, 8, 15);
-  g.kruskal();
-/*   test::registerTest("Initialize graph", []() {
+  test::registerTest("Initialize graph", []() {
     Graph<GraphType::UNDIRECTED, int> uGraph;
     Graph<GraphType::DIRECTED, int> dGraph;
 
-    test::expect(uGraph.state() == "");
     test::expect(uGraph.m_nodes.size() == 0);
-    test::expect(dGraph.state() == "");
     test::expect(dGraph.m_nodes.size() == 0);
   });
 
@@ -30,8 +16,7 @@ int main ()
     graph.addNode(7, 7);
 
     test::expect(graph.m_nodes.size() == 2);
-    test::expect(graph.m_nodes.find(5) != graph.m_nodes.end());
-    test::expect(graph.m_nodes.find(7) != graph.m_nodes.end());
+    test::expect(graph.getNode(5)->key == 5);
   });
 
   test::registerTest("Undirected: Add edges", []() {
@@ -93,7 +78,7 @@ int main ()
     test::expect(graph.getNode(7)->getEdge(5)->weight == 10);
   });
 
-  test::registerTest("Dijkstra 1", []() {
+  test::registerTest("Dijkstra", []() {
     Graph<GraphType::UNDIRECTED, int> graph;
     graph.addNode(0, 0);
     graph.addNode(1, 1);
@@ -106,8 +91,61 @@ int main ()
     graph.addEdge(2, 4, 20);
     graph.addEdge(3, 4, 5);
     
-    test::expect(graph.dijkstra(0, 3) == "[35] 0 2 4 3 ");
+
+    auto result = graph.dijkstra(0, 3);
+    auto distance = result.first;
+    auto path = result.second;
+    std::vector<int> expectedPath{ 0, 2, 4, 3 };
+    int expectedDistance = 35;
+
+    test::expect(distance == expectedDistance);
+    test::expect(path.size() == expectedPath.size());
+
+    auto comparePaths = [&path, &expectedPath]() {
+      for (int i = 0; i < path.size(); ++i) {
+        if (path[i] != expectedPath[i]) {
+          throw std::runtime_error("Path does not follow expected path");
+        }
+      }
+    };
+
+    test::expectNoThrow(comparePaths);
   });
- */
+
+  test::registerTest("Kruskal", []() {
+    Graph<GraphType::UNDIRECTED, int> graph;
+    graph.addNode(0, 0);
+    graph.addNode(1, 1);
+    graph.addNode(2, 2);
+    graph.addNode(3, 3);
+    graph.addNode(4, 4);
+    graph.addNode(5, 5);
+    graph.addEdge(0, 1, 10);
+    graph.addEdge(1, 4, 5);
+    graph.addEdge(1, 3, 10);
+    graph.addEdge(4, 5, 40);
+    graph.addEdge(3, 4, 1);
+    graph.addEdge(2, 3, 20);
+
+    auto edges = graph.kruskal();
+    std::vector<std::pair<int, int>> expectedEdges{ { 3, 4 }, { 1, 4 }, { 0, 1 }, { 2, 3 }, { 4, 5 } };
+    test::expect(edges.size() == expectedEdges.size());
+
+    auto compareEdges = [&edges, &expectedEdges]() {
+      for (int i = 0; i < edges.size(); ++i) {
+        if (
+          (edges[i].first == expectedEdges[i].first && edges[i].second == expectedEdges[i].second) ||
+          (edges[i].first == expectedEdges[i].second && edges[i].second == expectedEdges[i].first)
+        ) {
+          continue;
+        }
+
+        throw std::runtime_error("Different edges");
+      }
+    };
+
+    test::expectNoThrow(compareEdges);
+  });
+
   return 0;
 }

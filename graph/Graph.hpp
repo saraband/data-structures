@@ -4,6 +4,7 @@
 #include <list>
 #include <unordered_map>
 #include <string>
+#include <vector>
 
 #include "../Test.hpp"
 #include "../Utils.hpp"
@@ -17,38 +18,13 @@ enum GraphType
 };
 }
 
-template<GraphType::GraphType graphType, typename T>
+template<GraphType::GraphType graphType, typename ValueType>
 class Graph
 {
   TESTABLE
 
-  struct Node;
-
   public:
-    Graph ();
-    ~Graph ();
-    void addNode (int key, T value);
-    void addEdge(int keyA, int keyB, int weight = 1);
-    Node* getNode (int key) const
-    {
-      auto found = m_nodes.find(key);
-
-      if (found == m_nodes.end())
-        return nullptr;
-      
-      return found->second;
-    }
-
-    int size () const
-    {
-      return m_nodes.size();
-    }
-
-    std::string dijkstra (int a, int b) const;
-    std::list<std::pair<int, int>> kruskal () const;
-
-  private:
-
+    struct Node;
     struct Edge
     {
       Edge (Node* d, int w = 1)
@@ -56,13 +32,13 @@ class Graph
         , weight        { w }
       {}
 
-      int       weight;
       Node*     destination;
+      int       weight;
     };
 
     struct Node
     {
-      Node (int k, T v)
+      Node (int k, const ValueType& v)
         : key     { k }
         , value   { v }
       {}
@@ -78,31 +54,20 @@ class Graph
       }
 
       int                             key;
-      T                               value;
+      ValueType                       value;
       std::unordered_map<int, Edge*>  edges;
     };
 
-    // For testing @TODO is this necessary ?
-    std::string state () const
-    {
-      std::string state;
+    Graph ();
+    ~Graph ();
+    void addNode (int key, const ValueType& value);
+    void addEdge(int keyA, int keyB, int weight = 1);
+    Node* getNode (int key) const;
+    int size () const;
+    std::pair<int, std::vector<int>> dijkstra (int a, int b) const;
+    std::vector<std::pair<int, int>> kruskal () const;
 
-      for (auto& node : m_nodes) {
-        int nodeKey = node.first;
-        auto nodeEdges = node.second->edges;
-
-        state += toString(nodeKey) + "[ ";
-        
-        for (auto& edge : nodeEdges) {
-          state += toString(edge.second->destination) + ':' + toString(edge.second->weight) + ' ';
-        }
-
-        state += "] ";
-      }
-
-      return state;
-    }
-
+  private:
     std::unordered_map<int, Node*>   m_nodes;
     int                              m_numEdges;
 };
