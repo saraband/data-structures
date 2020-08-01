@@ -1,7 +1,7 @@
 #include "HashTable.hpp"
 
-template<typename T>
-HashTable<T>::HashTable (int baseCapacity)
+template<typename ValueType>
+HashTable<ValueType>::HashTable (int baseCapacity)
   : m_size                    { 0 }
   , m_capacity                { baseCapacity }
   , m_growCapacityThreshold   { static_cast<int>(baseCapacity * HASH_TABLE_CAPACITY_GROW_THRESHOLD) }
@@ -9,45 +9,38 @@ HashTable<T>::HashTable (int baseCapacity)
   m_buckets.resize(m_capacity);
 }
 
-template<typename T>
-int HashTable<T>::hash (int key) const
+template<typename ValueType>
+int HashTable<ValueType>::hash (int key) const
 {
   return key % m_capacity;
 }
 
-template<typename T>
-int HashTable<T>::size () const
+template<typename ValueType>
+int HashTable<ValueType>::size () const
 {
   return m_size;
 }
 
-template<typename T>
-typename HashTable<T>::HashElement const& HashTable<T>::nil () const
-{
-  static HashElement nil;
-  return nil;
-}
-
-template<typename T>
-typename HashTable<T>::HashElement const& HashTable<T>::get (int key) const
+template<typename ValueType>
+const ValueType& HashTable<ValueType>::get (int key) const
 {
   const auto& bucket = m_buckets[hash(key)];
   for (const auto& element : bucket) {
-    if (element.key() == key) {
-      return element;
+    if (element.key == key) {
+      return element.value;
     }
   }
 
-  return nil();
+  throw std::runtime_error("Key " + toString(key) + " does not exist in hash table");
 }
 
-template<typename T>
-void HashTable<T>::set (int key, T value)
+template<typename ValueType>
+void HashTable<ValueType>::set (int key, const ValueType& value)
 {
   auto& bucket = m_buckets[hash(key)];
   for (const auto& element : bucket) {
     // Element is already set, abort
-    if (element.key() == key)
+    if (element.key == key)
       return;
   }
 
@@ -67,73 +60,21 @@ void HashTable<T>::set (int key, T value)
     // No need to check for key duplicate
     for (auto& bucket : tempBuckets) {
       for (auto& element : bucket) {
-        m_buckets[hash(element.key())].push_back(HashElement(element));
+        m_buckets[hash(element.key)].push_back(HashElement(element));
       }
     }
   }
 }
 
-template<typename T>
-void HashTable<T>::remove (int key)
+template<typename ValueType>
+void HashTable<ValueType>::remove (int key)
 {
   auto& bucket = m_buckets[hash(key)];
   for (auto it = bucket.begin(); it != bucket.end(); it++) {
-    if (it->key() == key) {
+    if (it->key == key) {
       bucket.erase(it);
       m_size--;
       return;
     }
   }
-}
-
-template<typename T>
-HashTable<T>::HashElement::HashElement ()
-  : m_key     { 0 }
-  , m_value   { nullptr }
-{}
-
-template<typename T>
-HashTable<T>::HashElement::HashElement (int k, const T& v)
-  : m_key     { k }
-  , m_value   { new T(v) }
-{}
-
-template<typename T>
-HashTable<T>::HashElement::HashElement (const HashElement& other)
-  : m_key     { other.m_key }
-  , m_value   { nullptr }
-{
-  if (other.m_value)
-    m_value = new T(*other.m_value);
-}
-
-template<typename T>
-HashTable<T>::HashElement::~HashElement ()
-{
-  if (m_value)
-    delete m_value;
-}
-
-template<typename T>
-const T& HashTable<T>::HashElement::value () const
-{
-  return *m_value;
-}
-
-template<typename T>
-int HashTable<T>::HashElement::key () const
-{
-  return m_key;
-}
-
-template<typename T>
-bool HashTable<T>::HashElement::operator== (const HashElement& other) const
-{
-  return this == &other;
-}
-
-template<typename T>
-bool HashTable<T>::HashElement::operator!= (const HashElement& other) const
-{
-  return this != &other;
 }

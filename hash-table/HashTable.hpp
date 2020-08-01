@@ -11,35 +11,27 @@ constexpr int HASH_TABLE_DEFAULT_CAPACITY = 100;
 constexpr int HASH_TABLE_CAPACITY_GROW_RATIO = 2;
 constexpr float HASH_TABLE_CAPACITY_GROW_THRESHOLD = 0.8f;
 
-template<typename T>
+template<typename ValueType>
 class HashTable
 {
   TESTABLE
 
   public:
-    class HashElement
+    struct HashElement
     {
-      public:
-        HashElement ();
-        HashElement (int k, const T& v);
-        HashElement (const HashElement& other);
-        ~HashElement ();
-        const T& value () const;
-        int key () const;
-        bool operator== (const HashElement& other) const;
-        bool operator!= (const HashElement& other) const;
+      HashElement (int k, const ValueType& v)
+        : key     { k }
+        , value   { v }
+      {}
 
-      private:
-        int   m_key;
-        T*    m_value;
+      int         key;
+      ValueType   value;
     };
 
     HashTable (int baseCapacity = HASH_TABLE_DEFAULT_CAPACITY);
-
     int size () const;
-    const HashElement& nil () const;
-    const HashElement& get (int key) const;
-    void set (int key, T value);
+    const ValueType& get (int key) const;
+    void set (int key, const ValueType& value);
     void remove (int key);
 
   private:
