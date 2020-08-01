@@ -8,21 +8,21 @@
 #include "../Test.hpp"
 #include "../Utils.hpp"
 
-template<typename T>
+template<typename KeyType>
 class DisjointSet
 {
   TESTABLE
 
   public:
     DisjointSet ();
-    DisjointSet (const std::vector<T>& array);
-    void add (T key);
-    void unite (T a, T b);
-    T find (T key);
+    DisjointSet (const std::vector<KeyType>& array);
+    void add (KeyType key);
+    void unite (KeyType a, KeyType b);
+    KeyType find (KeyType key);
 
   private:
-    std::unordered_map<T, T>    m_parents;
-    std::unordered_map<T, int>  m_ranks;
+    std::unordered_map<KeyType, KeyType>    m_parents;
+    std::unordered_map<KeyType, int>        m_ranks;
 };
 
 #include "DisjointSet.tpp"

@@ -1,32 +1,32 @@
 #include "DisjointSet.hpp"
 
-template<typename T>
-DisjointSet<T>::DisjointSet ()
+template<typename KeyType>
+DisjointSet<KeyType>::DisjointSet ()
 {
   
 }
 
-template<typename T>
-DisjointSet<T>::DisjointSet (const std::vector<T>& array)
+template<typename KeyType>
+DisjointSet<KeyType>::DisjointSet (const std::vector<KeyType>& array)
 {
-  for (T key : array) {
+  for (KeyType key : array) {
     add(key);
   }
 }
 
 
-template<typename T>
-void DisjointSet<T>::add (T key)
+template<typename KeyType>
+void DisjointSet<KeyType>::add (KeyType key)
 {
   m_parents[key] = key;
 }
 
-template<typename T>
-void DisjointSet<T>::unite (T a, T b)
+template<typename KeyType>
+void DisjointSet<KeyType>::unite (KeyType a, KeyType b)
 {
   // Find a and b representatives
-  T aRep = find(a);
-  T bRep = find(b);
+  KeyType aRep = find(a);
+  KeyType bRep = find(b);
 
   // a and b already in the same set
   if (aRep == bRep)
@@ -55,18 +55,18 @@ void DisjointSet<T>::unite (T a, T b)
   }
 }
 
-template<typename T>
-T DisjointSet<T>::find (T key)
+template<typename KeyType>
+KeyType DisjointSet<KeyType>::find (KeyType key)
 {
   // Find direct parent of element
-  T parent = m_parents.find(key)->second;
+  KeyType parent = m_parents.find(key)->second;
 
   // Direct parent is the representative
   if (key == parent)
     return key;
 
   // Search recursively in the parents which is the representative
-  T rep = find(parent);
+  KeyType rep = find(parent);
 
   // Compress the path to the representative by making it the direct parent
   m_parents[key] = rep;
