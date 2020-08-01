@@ -15,7 +15,7 @@ C++ implementation of common data structures and algorithms
     * Dijkstra (pathfinding)
     * Kruskal (minimum spanning tree)
 * Self-balancing binary search tree
-    * Red/black
+    * Red/black (@TODO: delete node operation)
 
 ## TODO
 
